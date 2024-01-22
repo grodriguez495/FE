@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ChartistGraph from "react-chartist";
-import { urlGetSensorIds, urlGetSensorValueBySensor, urlGetNotificationSend, urlGetActiveNotificationSend } from '../endpoints';
+import { urlGetSensorIds, urlGetSensorValueBySensor, urlGetActiveNotificationSend,urlDeleteNotification } from '../endpoints';
 import styles from '../assets/css/new-user.module.css'
 // react-bootstrap components
 import {
@@ -44,10 +44,7 @@ function Dashboard() {
         phone: phone
       }
     });
-    console.log("notificationDataResponse", notificationDataResponse);
     setUserNotification(notificationDataResponse.data);
-    console.log("labelsResponse", labels);
-    console.log("dataChartResponse", dataChart);
   }
   useEffect(() => {
     getUserNotificationResponse();
@@ -74,6 +71,21 @@ function Dashboard() {
     setLabels(labelresponse);
     setDataChart(datachartResponse);
    
+  }
+  async function handleNotificationSoftDelete(notificationId){
+    
+    axios.delete(urlDeleteNotification + notificationId)
+    .then(response => {
+
+      console.log(response);
+      if (response.status === 200) {
+       window.location.reload();
+
+      } else {
+        alert('No se encontro la notificacion');
+      }
+    })
+    .catch(err => console.log(err));
   }
  
   return (
@@ -194,7 +206,7 @@ function Dashboard() {
               </Card.Footer>
             </Card>
           </Col>
-          {/* { <Col md="4">
+          {/* {  <Col md="4">
             <Card>
               <Card.Header>
                 <Card.Title as="h4">Variables tomadas del sensor {selectedItem}</Card.Title>
@@ -208,7 +220,8 @@ function Dashboard() {
                   <ChartistGraph
                     data={{
                       //labels: labels,
-                      series: [dataChart]
+                      series: [dataChart],
+                      donut: true
                     }}
                     type="Pie"
                   />
@@ -216,7 +229,7 @@ function Dashboard() {
 
               </Card.Body>
             </Card>
-          </Col> } */}
+          </Col> }  */}
         </Row>
         <Row>
           <Col md="6">
@@ -288,14 +301,14 @@ function Dashboard() {
 
                               <OverlayTrigger
                                 overlay={
-                                  <Tooltip id="tooltip-506045838">Remove..</Tooltip>
+                                  <Tooltip id="tooltip-506045838">Eliminar</Tooltip>
                                 }
                               >
                                 <Button
                                   className="btn-simple btn-link p-1"
                                   type="button"
                                   variant="danger"
-                                 
+                                  onClick={() => handleNotificationSoftDelete(notification.alertId)}
                                 >
                                   <i className="fas fa-times"></i>
                                 </Button>
