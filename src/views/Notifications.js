@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 // react plugin for creating notifications over the dashboard
 import NotificationAlert from "react-notification-alert";
 // react-bootstrap components
@@ -14,49 +14,119 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
+import { TableContainer, TableFooter, TableHead, TablePagination, TableRow } from "@mui/material";
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import { urlGetNotificationSend } from '../endpoints';
+import axios from 'axios';
+import PropTypes from 'prop-types';
+import { FaThumbsUp, FaThumbsDown,FaBell } from "react-icons/fa"
+import { useTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import LastPageIcon from '@mui/icons-material/LastPage';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 
 function Notifications() {
   const [showModal, setShowModal] = React.useState(false);
   const notificationAlertRef = React.useRef(null);
-  const notify = (place) => {
-    var color = Math.floor(Math.random() * 5 + 1);
-    var type;
-    switch (color) {
-      case 1:
-        type = "primary";
-        break;
-      case 2:
-        type = "success";
-        break;
-      case 3:
-        type = "danger";
-        break;
-      case 4:
-        type = "warning";
-        break;
-      case 5:
-        type = "info";
-        break;
-      default:
-        break;
-    }
-    var options = {};
-    options = {
-      place: place,
-      message: (
-        <div>
-          <div>
-            Welcome to <b>Light Bootstrap Dashboard React</b> - a beautiful
-            freebie for every web developer.
-          </div>
-        </div>
-      ),
-      type: type,
-      icon: "nc-icon nc-bell-55",
-      autoDismiss: 7,
-    };
-    notificationAlertRef.current.notificationAlert(options);
+  const [userNotification, setUserNotification] = useState([]);
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userNotification.length) : 0;
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
   };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+  function TablePaginationActions(props) {
+    const theme = useTheme();
+    const {count, page, rowsPerPage, onPageChange} = props;
+
+    const handleFirstPageButtonClick = (event) => {
+      onPageChange(event, 0);
+    };
+
+    const handleBackButtonClick = (event) => {
+      onPageChange(event, page - 1);
+    };
+
+    const handleNextButtonClick = (event) => {
+      onPageChange(event, page + 1);
+    };
+
+    const handleLastPageButtonClick = (event) => {
+      onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+    };
+
+    return (
+      <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+        <IconButton
+          onClick={handleFirstPageButtonClick}
+          disabled={page === 0}
+          aria-label="Primera pagina"
+        >
+          {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+        </IconButton>
+        <IconButton
+          onClick={handleBackButtonClick}
+          disabled={page === 0}
+          aria-label="Pagina Anterior"
+        >
+          {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+        </IconButton>
+        <IconButton
+          onClick={handleNextButtonClick}
+          disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+          aria-label="Siguiente Pagina"
+        >
+          {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+        </IconButton>
+        <IconButton
+          onClick={handleLastPageButtonClick}
+          disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+          aria-label="Ultima Pagina"
+        >
+          {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+        </IconButton>
+      </Box>
+    );
+  }
+
+  TablePaginationActions.propTypes = {
+    count: PropTypes.number.isRequired,
+    onPageChange: PropTypes.func.isRequired,
+    page: PropTypes.number.isRequired,
+    rowsPerPage: PropTypes.number.isRequired,
+  };
+
+  async function getUserNotificationResponse() {
+    const currentEmail = localStorage.getItem("email");
+    const phone = localStorage.getItem("phone")
+
+    const notificationDataResponse = await axios.get(urlGetNotificationSend, {
+      params: {
+        email: currentEmail,
+        phone: phone
+      }
+    });
+    console.log("notificationDataResponse",notificationDataResponse.data);
+    setUserNotification(notificationDataResponse.data);
+  }
+  useEffect(() => {
+    getUserNotificationResponse();
+
+
+  }, [])
   return (
     <>
       <div className="rna-container">
@@ -65,217 +135,73 @@ function Notifications() {
       <Container fluid>
         <Card>
           <Card.Header>
-            <Card.Title as="h4">Notifications</Card.Title>
-            <p className="card-category">
-              Handcrafted by our friend and colleague{" "}
-              <a
-                href="https://github.com/EINazare"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Nazare Emanuel-Ioan
-              </a>
-              . Please checkout the{" "}
-              <a
-                href="https://github.com/creativetimofficial/react-notification-alert"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                full documentation.
-              </a>
-            </p>
+            <Card.Title as="h4">Notificaciones enviadas</Card.Title>
+
           </Card.Header>
           <Card.Body>
             <Row>
-              <Col md="6">
-                <h5>
-                  <small>Notifications Style</small>
-                </h5>
-                <Alert variant="info">
-                  <span>This is a plain notification</span>
-                </Alert>
-                <Alert variant="info">
-                  <button
-                    aria-hidden={true}
-                    className="close"
-                    data-dismiss="alert"
-                    type="button"
-                  >
-                    <i className="nc-icon nc-simple-remove"></i>
-                  </button>
-                  <span>This is a notification with close button.</span>
-                </Alert>
-                <Alert className="alert-with-icon" variant="info">
-                  <button
-                    aria-hidden={true}
-                    className="close"
-                    data-dismiss="alert"
-                    type="button"
-                  >
-                    <i className="nc-icon nc-simple-remove"></i>
-                  </button>
-                  <span
-                    data-notify="icon"
-                    className="nc-icon nc-bell-55"
-                  ></span>
-                  <span>
-                    This is a notification with close button and icon.
-                  </span>
-                </Alert>
-                <Alert className="alert-with-icon" variant="info">
-                  <button
-                    aria-hidden={true}
-                    className="close"
-                    data-dismiss="alert"
-                    type="button"
-                  >
-                    <i className="nc-icon nc-simple-remove"></i>
-                  </button>
-                  <span
-                    data-notify="icon"
-                    className="nc-icon nc-bell-55"
-                  ></span>
-                  <span>
-                    This is a notification with close button and icon and have
-                    many lines. You can see that the icon and the close button
-                    are always vertically aligned. This is a beautiful
-                    notification. So you don't have to worry about the style.
-                  </span>
-                </Alert>
+              <Col md="12">
+                <TableContainer component={Paper}>
+                  <table sx={{ minWidth: 500 }}>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="right">Id</TableCell>
+                        <TableCell align="right">Fecha </TableCell>
+                        <TableCell align="right">Mensaje </TableCell>
+                        <TableCell align="right">Destinatario</TableCell>
+                        <TableCell align="right">Tipo de alerta</TableCell>
+                        <TableCell align="right">Esta Leido</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {(rowsPerPage >0
+                      ? userNotification.slice(page * rowsPerPage,page*rowsPerPage + rowsPerPage)
+                      :userNotification).map((notification) => (
+                        <TableRow key={notification.alertId}>
+                          <TableCell component="th" scope="notification">
+                            {notification.alertId}
+                          </TableCell>
+                          <TableCell style={{ width: 160 }} align="right">
+                          {notification.timestamp}
+                          </TableCell>
+                          <TableCell style={{ width: 160 }} align="right">
+                          {notification.message}
+                          </TableCell>
+                          <TableCell style={{ width: 160 }} align="right">
+                          {notification.recipient}
+                          </TableCell>
+                          <TableCell style={{ width: 160 }} align="right">
+                          {notification.alertTypeName}
+                          </TableCell>
+                          <TableCell style={{ width: 160 }} align="right">
+                          {notification.isOpened ? <FaBell style={{ color: 'green', size: '50px' }} /> : <FaBell style={{ color: 'red', size: '50px' }} />}
+                          </TableCell>
+                        </TableRow>
+                      ))}{emptyRows > 0 && (
+                        <TableRow style={{ height: 53 * emptyRows }}>
+                          <TableCell colSpan={6} />
+                        </TableRow>
+                      )}
+                    </TableBody>
+                    <TableFooter>
+                      <TableRow>
+                        <TablePagination
+                        rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                          colSpan={6}
+                          count={userNotification.length}
+                          rowsPerPage={rowsPerPage}
+                          page={page}                       
+                          onPageChange={handleChangePage}
+                          onRowsPerPageChange={handleChangeRowsPerPage}
+                          ActionsComponent={TablePaginationActions}
+                        />
+                      </TableRow>
+                    </TableFooter>
+                  </table>
+                </TableContainer>
+
               </Col>
-              <Col md="6">
-                <h5>
-                  <small>Notification States</small>
-                </h5>
-                <Alert variant="primary">
-                  <button
-                    aria-hidden={true}
-                    className="close"
-                    data-dismiss="alert"
-                    type="button"
-                  >
-                    <i className="nc-icon nc-simple-remove"></i>
-                  </button>
-                  <span>
-                    <b>Primary -</b>
-                    This is a regular notification made with ".alert-primary"
-                  </span>
-                </Alert>
-                <Alert variant="info">
-                  <button
-                    aria-hidden={true}
-                    className="close"
-                    data-dismiss="alert"
-                    type="button"
-                  >
-                    <i className="nc-icon nc-simple-remove"></i>
-                  </button>
-                  <span>
-                    <b>Info -</b>
-                    This is a regular notification made with ".alert-info"
-                  </span>
-                </Alert>
-                <Alert variant="success">
-                  <button
-                    aria-hidden={true}
-                    className="close"
-                    data-dismiss="alert"
-                    type="button"
-                  >
-                    <i className="nc-icon nc-simple-remove"></i>
-                  </button>
-                  <span>
-                    <b>Success -</b>
-                    This is a regular notification made with ".alert-success"
-                  </span>
-                </Alert>
-                <Alert variant="warning">
-                  <button
-                    aria-hidden={true}
-                    className="close"
-                    data-dismiss="alert"
-                    type="button"
-                  >
-                    <i className="nc-icon nc-simple-remove"></i>
-                  </button>
-                  <span>
-                    <b>Warning -</b>
-                    This is a regular notification made with ".alert-warning"
-                  </span>
-                </Alert>
-                <Alert variant="danger">
-                  <button
-                    aria-hidden={true}
-                    className="close"
-                    data-dismiss="alert"
-                    type="button"
-                  >
-                    <i className="nc-icon nc-simple-remove"></i>
-                  </button>
-                  <span>
-                    <b>Danger -</b>
-                    This is a regular notification made with ".alert-danger"
-                  </span>
-                </Alert>
-              </Col>
-            </Row>
-            <br></br>
-            <br></br>
-            <div className="places-buttons">
-              <Row>
-                <Col className="offset-md-3 text-center" md="6">
-                  <Card.Title as="h4">Notifications Places</Card.Title>
-                  <p className="card-category">
-                    <small>Click to view notifications</small>
-                  </p>
-                </Col>
-              </Row>
-              <Row className="justify-content-center">
-                <Col lg="3" md="3">
-                  <Button block onClick={() => notify("tl")} variant="default">
-                    Top Left
-                  </Button>
-                </Col>
-                <Col lg="3" md="3">
-                  <Button block onClick={() => notify("tc")} variant="default">
-                    Top Center
-                  </Button>
-                </Col>
-                <Col lg="3" md="3">
-                  <Button block onClick={() => notify("tr")} variant="default">
-                    Top Right
-                  </Button>
-                </Col>
-              </Row>
-              <Row className="justify-content-center">
-                <Col lg="3" md="3">
-                  <Button block onClick={() => notify("bl")} variant="default">
-                    Bottom Left
-                  </Button>
-                </Col>
-                <Col lg="3" md="3">
-                  <Button block onClick={() => notify("bc")} variant="default">
-                    Bottom Center
-                  </Button>
-                </Col>
-                <Col lg="3" md="3">
-                  <Button block onClick={() => notify("br")} variant="default">
-                    Bottom Right
-                  </Button>
-                </Col>
-              </Row>
-            </div>
-            <Row>
-              <Col className="text-center" md="12">
-                <h4 className="title">Modal</h4>
-                <Button
-                  className="btn-fill btn-wd"
-                  variant="info"
-                  onClick={() => setShowModal(true)}
-                >
-                  Launch Modal Mini
-                </Button>
-              </Col>
+
             </Row>
           </Card.Body>
         </Card>
