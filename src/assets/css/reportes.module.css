@@ -1,0 +1,102 @@
+.container {
+  width: 100%;
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  background-size: cover;
+  justify-content: center;
+  
+}
+
+.containerModal {
+  width: 100%;
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  background-size: cover;
+  justify-content: center;
+ 
+}
+
+
+.title {
+  top: 50px;
+  left: 700px;
+  color: rgb(7, 7, 7);
+  height: 14px;
+  position: center;
+  padding-top: var(--dl-space-space-fiveunits);
+}
+
+.divTitle {
+  width: 100%;
+  position: absolute;
+  top: 50px;
+  left: 50;
+  text-align: center;
+}
+
+.form {
+  width: 556px;
+  height: 464px;
+  display: flex;
+  border-style: 0px;
+  justify-content: space-between;
+  background-color: #ffffff;
+  border-radius: 5%;
+  flex-direction: column;
+  padding: 50px 60px 40px 80px;
+}
+
+.internal-container {
+  box-sizing: border-box;
+  margin: auto;
+  padding: auto;
+  background-color: white;
+  border: 1px;
+
+}
+
+.text {
+  margin-right: 30px;
+  color: #e76a23;
+  width: 147px;
+  font-size: 20px;
+
+}
+
+.button-div {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  justify-content: center;
+}
+
+.navlink {
+  text-decoration: none;
+}
+
+.title {
+  top: 50px;
+  left: 430px;
+  color: rgb(218, 101, 17);
+  height: 14px;
+  position: center;
+  padding-top: var(--dl-space-space-fiveunits);
+}
+
+.divTitle {
+  width: 100%;
+  position: absolute;
+  top: 50px;
+  text-align: center;
+}
+
+.divButtons {
+  width: auto;
+  position: absolute;
+  top: 650px;
+}
+.customDatePicker{
+
+}
