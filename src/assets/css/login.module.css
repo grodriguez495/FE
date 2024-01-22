@@ -1,0 +1,106 @@
+.container {
+    width: 100%;
+    display: flex;
+    overflow: auto;
+    box-shadow: 5px 5px 10px 0px #101010;
+    min-height: 100vh;
+    align-items: center;
+    border-color: var(--dl-color-gray-black);
+    border-width: 15x;
+    flex-direction: column;
+    background-size: cover;
+    justify-content: flex-start;
+   
+  }
+  .form {
+    top: 150px;
+    left: 0px;
+    color: var(--dl-color-gray-black);
+    right: 0px;
+    width: 627px;
+    height: 443px;
+    margin: auto;
+    display: flex;
+    position: absolute;
+    font-size: 20px;
+    align-items: center;
+    border-color: var(--dl-color-gray-black);
+    border-style: dotted;
+    border-width: 1px;
+    justify-content: center;
+    background-color: #ffffff;
+  }
+  .textinput {
+    top: 106px;
+    left: 199px;
+    width: 332px;
+    height: 39px;
+    position: absolute;
+  }
+  .textinput.error {
+    border: 1px solid red;
+  }
+  .text {
+    top: 117px;
+    left: 64px;
+    color: #0c0c0c;
+    position: absolute;
+    font-size: 20px;
+  }
+  .text1 {
+    top: 205px;
+    left: 64px;
+    color: #0c0c0c;
+    position: absolute;
+    font-size: 20px;
+  }
+  .textinput1 {
+    top: 198px;
+    left: 198px;
+    width: 332px;
+    position: absolute;
+  }
+  .textinput1.error {
+    border: 1px solid red;
+  }
+  .navlink {
+    left: 239px;
+    color: #0c0c0c;
+    bottom: 42px;
+    position: absolute;
+    text-decoration: none;
+  }
+  .navlink1 {
+    top: 311px;
+    left: 201px;
+    height: 45px;
+    margin: auto;
+    position: absolute;
+    padding-left: 20px;
+    text-decoration: none;
+    background-color: #ffffff;
+    border-radius: 70px;
+    color: black;
+    
+  }
+  .navlink2 {
+    top: 311px;
+    left: 372px;
+    height: 45px;
+    margin: auto;
+    position: absolute;
+    text-decoration: none;
+    border-radius: 70px;
+    border-width: 2px;
+    background-color: #ffffff;
+    color: black;
+  
+  }
+  .text3 {
+    top: auto;
+    left: auto;
+    color: rgb(5, 5, 5);
+    height: 14px;
+    position: center;
+    padding-top: var(--dl-space-space-fiveunits);
+  }
