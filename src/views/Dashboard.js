@@ -270,7 +270,7 @@ function Dashboard() {
               </Card.Body>
             </Card>
           </Col>
-          <Col md="6">
+          <Col md="7">
             <Card className="card-tasks">
               <Card.Header>
                 <Card.Title as="h4">Historia de alertas</Card.Title>
