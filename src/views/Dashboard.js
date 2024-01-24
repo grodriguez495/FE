@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ChartistGraph from "react-chartist";
-import { urlGetSensorIds, urlGetSensorValueBySensor, urlGetActiveNotificationSend,urlDeleteNotification } from '../endpoints';
+import { urlGetSensorIds, urlGetSensorValueBySensor, urlGetActiveNotificationSend, urlDeleteNotification } from '../endpoints';
 import styles from '../assets/css/new-user.module.css'
 // react-bootstrap components
 import {
@@ -27,6 +27,7 @@ function Dashboard() {
   const [dataChart, setDataChart] = useState([]);
   const [totalSensores, setTotalSensores] = useState(null);
   const [userNotification, setUserNotification] = useState([]);
+  const [valuesPie, setValuesPie] = useState([]);
 
   const getSensorIdsResponse = async () => {
     const { data } = await axios.get(urlGetSensorIds);
@@ -65,29 +66,29 @@ function Dashboard() {
         sensor: eventKey
       }
     });
-   
+
     const labelresponse = data.data.map(x => x.variable)
     const datachartResponse = data.data.map(y => y.values)
     setLabels(labelresponse);
     setDataChart(datachartResponse);
-   
+    setValuesPie(data);
+    console.log("dataChart",dataChart)
   }
-  async function handleNotificationSoftDelete(notificationId){
-    
+  async function handleNotificationSoftDelete(notificationId) {
+
     axios.delete(urlDeleteNotification + notificationId)
-    .then(response => {
+      .then(response => {
 
-      console.log(response);
-      if (response.status === 200) {
-       window.location.reload();
+        if (response.status === 200) {
+          window.location.reload();
 
-      } else {
-        alert('No se encontro la notificacion');
-      }
-    })
-    .catch(err => console.log(err));
+        } else {
+          alert('No se encontro la notificacion');
+        }
+      })
+      .catch(err => console.log(err));
   }
- 
+
   return (
 
     <>
@@ -167,7 +168,7 @@ function Dashboard() {
           </Col>
         </Row>
         <Row>
-          <Col md="8">
+          <Col md="6">
             <Card>
               <Card.Header>
                 <Card.Title as="h4">Variables tomadas del sensor {selectedItem}</Card.Title>
@@ -197,7 +198,7 @@ function Dashboard() {
                         right: 50,
                       },
                     }}
-                    
+
                   />
                 </div>
               </Card.Body>
@@ -206,30 +207,28 @@ function Dashboard() {
               </Card.Footer>
             </Card>
           </Col>
-          {/* {  <Col md="4">
+          <Col md="3">
             <Card>
               <Card.Header>
                 <Card.Title as="h4">Variables tomadas del sensor {selectedItem}</Card.Title>
 
               </Card.Header>
               <Card.Body>
-                <div
+              <div
                   className="ct-chart ct-perfect-fourth"
                   id="chartPreferences"
                 >
                   <ChartistGraph
                     data={{
-                      //labels: labels,
-                      series: [dataChart],
-                      donut: true
+                      labels: labels,
+                      series:  dataChart,
                     }}
                     type="Pie"
                   />
-                </div>
-
+                </div>    
               </Card.Body>
             </Card>
-          </Col> }  */}
+          </Col>
         </Row>
         <Row>
           <Col md="6">

@@ -120,7 +120,7 @@ function Header() {
                 href="/admin/login"
                 onClick={(e) => e.preventDefault()}
               >
-                <span className="no-icon">Log in</span>
+                <span className="no-icon">Ingresar</span>
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
@@ -129,7 +129,7 @@ function Header() {
                 href="/admin/login"
                 onClick={(e) =>logOutSession(e)}
               >
-                <span className="no-icon">Log out</span>
+                <span className="no-icon">Salir</span>
               </Nav.Link>
             </Nav.Item>
           </Nav>

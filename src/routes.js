@@ -1,7 +1,7 @@
 import Dashboard from "views/Dashboard.js";
 import PerfilUsuario from "views/PerfilUsuario";
 import UserTableList from "views/UsersTableList.js";
-import Reports from "views/Reports";
+import ReportPage from "views/ReportPage"
 import Maps from "views/Maps.js";
 import Notifications from "views/Notifications.js";
 import Login from "views/Login.js";
@@ -31,22 +31,22 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    path: "/reports",
-    name: "Reportes",
+    path: "/reportPage",
+    name: "Pagina de reportes",
     icon: "nc-icon nc-chart-bar-32",
-    component: Reports,
+    component: ReportPage,
     layout: "/admin"
   },
   {
     path: "/maps",
-    name: "Maps",
+    name: "Ubicación de sensores",
     icon: "nc-icon nc-pin-3",
     component: Maps,
     layout: "/admin"
   },
   {
     path: "/notifications",
-    name: "Notifications",
+    name: "Notificaciones",
     icon: "nc-icon nc-bell-55",
     component: Notifications,
     layout: "/admin"

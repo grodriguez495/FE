@@ -14,3 +14,4 @@ export const urlGetSensorValueBySensor = `${baseURL}/api/Sensor/By-sensor`
 export const urlGetNotificationSend = `${baseURL}/api/Notification/By-emil-and-phone?`
 export const urlGetActiveNotificationSend = `${baseURL}/api/Notification/Active-notification?`
 export const urlDeleteNotification = `${baseURL}/api/Notification/`
+export const urlGetSensorValuesByDatesAndVariableAndSensor = `${baseURL}/api/Sensor/By-dates-and-variable-and-sensor`

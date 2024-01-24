@@ -42,7 +42,7 @@ function PerfilUsuario() {
                   <Row>
                     <Col className="pr-1" md="5">
                       <Form.Group>
-                        <label>UserId</label>
+                        <label>User Id</label>
                         <Form.Control
                         disabled
                           value={user.userId}
@@ -53,7 +53,7 @@ function PerfilUsuario() {
                     </Col>
                     <Col className="pr-1" md="5">
                       <Form.Group>
-                        <label>Name</label>
+                        <label>Nombres</label>
                         <Form.Control
                            value={user.name}
                           placeholder="Nombre"

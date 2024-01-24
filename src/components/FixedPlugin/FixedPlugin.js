@@ -1,11 +1,4 @@
-/*!
 
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 /*eslint-disable*/
 import React, { Component } from "react";
 
@@ -59,7 +52,7 @@ function FixedPlugin({
               onChange={setHasImage}
             />
           </li>
-          <li className="adjustments-line mt-3">
+          {/* <li className="adjustments-line mt-3">
             <p>Filters</p>
             <div className="pull-right">
               <Badge
@@ -94,7 +87,7 @@ function FixedPlugin({
               ></Badge>
             </div>
             <div className="clearfix"></div>
-          </li>
+          </li> */}
           <li className="header-title">Sidebar Images</li>
           <li className={image === sideBarImage1 ? "active" : ""}>
             <a
