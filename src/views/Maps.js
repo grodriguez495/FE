@@ -1,21 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // react-bootstrap components
 import { Badge, Button, Navbar, Nav, Container, Row, Card, Col, Dropdown } from "react-bootstrap";
-import credentials from "credentials";
-import { GoogleMap, withScriptjs, withGoogleMap } from "react-google-maps";
+import { GoogleMap, withScriptjs, withGoogleMap,Marker } from "react-google-maps";
+import {urlGetSensorGeographicInformation} from '../endpoints';
+import axios from 'axios';
 
-function Map() {
-  return <GoogleMap defaultZoom={10} defaultCenter={{ lat: 4.509003, lng: -74.103069 }} />
-}
 
-const MapWrapped = withScriptjs(withGoogleMap(Map));
 export default function Maps() {
-  const [selectedItem, setSelectedItem] = useState(null);
+
+ 
   const [sensorId, setSensorId] = useState([]);
+  const [longitud, setLongitud] = useState(-74.078020);
+  const [latitud, setLatitud] = useState(4.656367);
+  const [longitudMarker, setLongitudMarker] = useState();
+  const [latitudMarker, setLatitudMarker] = useState();
+
+  function Map() {
+    return <GoogleMap defaultZoom={12} defaultCenter={{ lat: latitud , lng: longitud }}>
+      <Marker position ={{ lat: latitudMarker , lng: longitudMarker}}/>
+    </GoogleMap>
+  }
+  
+  const MapWrapped = withScriptjs(withGoogleMap(Map));
+
+  const getSensorResponse = async () => {
+    const { data } = await axios.get(urlGetSensorGeographicInformation);
+    setSensorId(data);
+   
+  }
+  useEffect(() => {
+    getSensorResponse();
+  }, [])
 
   const handleSelect = (eventKey) => {
-    setSelectedItem(eventKey);
+
+    const sensorSeleted =sensorId.filter(x => x.sensorId === eventKey);
+    let latitud = sensorSeleted[0].latitud;
+    let longitud = sensorSeleted[0].longitud;
+
+    setLatitud(latitud);
+    setLongitud(longitud);
+    setLatitudMarker(latitud);
+    setLongitudMarker(longitud);
+
   };
 
   return (
@@ -27,8 +55,7 @@ export default function Maps() {
               <Card.Title as="h4">ubicación de sensores</Card.Title>
             </Card.Header>
             <Card.Body>
-              <Row>
-                
+              <Row>   
                 <Col style={{padding:15}} sm="1.5">
                   <Card>
                     <Card.Body>
@@ -38,7 +65,7 @@ export default function Maps() {
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                           {
-                            sensorId.map((sensor, key) => (<Dropdown.Item key={key} eventKey={sensor}>{sensor}</Dropdown.Item>))
+                            sensorId.map(sensor => (<Dropdown.Item key={sensorId}  eventKey={sensor.sensorId}>{sensor.sensorId}</Dropdown.Item>))
                           }
                         </Dropdown.Menu>
                       </Dropdown>
@@ -54,12 +81,15 @@ export default function Maps() {
                   mapElement={<div style={{ height: `100%` }} />}
                 />
               </div>
-
             </Card.Body>
           </Card>
         </Row>
       </Container>
     </>
   );
+
+
 }
+
+
 
