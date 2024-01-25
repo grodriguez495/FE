@@ -206,30 +206,7 @@ function Dashboard() {
               </Card.Footer>
             </Card>
           </Col>
-          {/* {  <Col md="4">
-            <Card>
-              <Card.Header>
-                <Card.Title as="h4">Variables tomadas del sensor {selectedItem}</Card.Title>
-
-              </Card.Header>
-              <Card.Body>
-                <div
-                  className="ct-chart ct-perfect-fourth"
-                  id="chartPreferences"
-                >
-                  <ChartistGraph
-                    data={{
-                      //labels: labels,
-                      series: [dataChart],
-                      donut: true
-                    }}
-                    type="Pie"
-                  />
-                </div>
-
-              </Card.Body>
-            </Card>
-          </Col> }  */}
+        
         </Row>
         <Row>
           <Col md="6">
