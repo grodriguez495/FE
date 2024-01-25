@@ -131,7 +131,7 @@ function Dashboard() {
                   </Col>
                   <Col xs="9">
                     <div className="numbers">
-                      <p className="card-category">Numero de alertas enviadas </p>
+                      <p className="card-category">Numero de alertas enviadas sin marcar como leidas </p>
 
                       <Card.Title as="h4">{userNotification.length}</Card.Title>
                     </div>
@@ -142,7 +142,7 @@ function Dashboard() {
                 <hr></hr>
                 <div className="stats">
                   <i className="far fa-clock-o mr-1"></i>
-                  durante el dia de hoy
+                
                 </div>
               </Card.Footer>
             </Card>

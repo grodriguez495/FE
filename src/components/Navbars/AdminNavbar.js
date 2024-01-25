@@ -1,19 +1,17 @@
-/*!
 
-
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
-
+import axios from 'axios';
 import routes from "routes.js";
+import { urlGetActiveNotificationSendByDate } from '../../endpoints';
+
 
 function Header() {
+  const [userNotification, setUserNotification] = useState([]);
+  const [userSmsNotification, setUserSmsNotification] = useState([]);
+  const [userEmailNotification, setUserEmailNotification] = useState([]);
+
   const location = useLocation();
   const mobileSidebarToggle = (e) => {
     e.preventDefault();
@@ -26,6 +24,30 @@ function Header() {
     };
     document.body.appendChild(node);
   };
+
+  useEffect(() => {
+    getUserNotificationResponse();
+  }, [])
+
+  async function getUserNotificationResponse() {
+    const currentEmail = localStorage.getItem("email");
+    const phone = localStorage.getItem("phone")
+
+    const notificationDataResponse = await axios.get(urlGetActiveNotificationSendByDate, {
+      params: {
+        email: currentEmail,
+        phone: phone
+      }
+    });
+    setUserNotification(notificationDataResponse.data);
+    const smsNotifications = notificationDataResponse.data.filter(x => x.alertType === 2);
+    const emailNotifications = notificationDataResponse.data.filter(x => x.alertType === 1);
+    console.log("notificationDataResponse.data", notificationDataResponse.data)
+    console.log("smsNotifications", smsNotifications)
+    console.log("emailNotifications", emailNotifications)
+    setUserEmailNotification(emailNotifications);
+    setUserSmsNotification(smsNotifications);
+  }
 
   const logOutSession = (e) => {
     localStorage.removeItem("userId");
@@ -66,7 +88,7 @@ function Header() {
           <span className="navbar-toggler-bar burger-lines"></span>
         </Navbar.Toggle>
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="nav mr-auto" navbar>            
+          <Nav className="nav mr-auto" navbar>
             <Dropdown as={Nav.Item}>
               <Dropdown.Toggle
                 as={Nav.Link}
@@ -76,39 +98,21 @@ function Header() {
                 className="m-0"
               >
                 <i className="nc-icon nc-planet"></i>
-                <span className="notification">5</span>
-                <span className="d-lg-none ml-1">Notification</span>
+                <span className="notification"> {userNotification.length}</span>
+                <span className="d-lg-none ml-1">Notificaciones por dia</span>
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item
-                  href="#pablo"
+                  href="/admin/notifications"
                   onClick={(e) => e.preventDefault()}
                 >
-                  Notification 1
+                  {userSmsNotification.length} Notificaciones SMS
                 </Dropdown.Item>
                 <Dropdown.Item
-                  href="#pablo"
+                  href="/admin/notifications"
                   onClick={(e) => e.preventDefault()}
                 >
-                  Notification 2
-                </Dropdown.Item>
-                <Dropdown.Item
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  Notification 3
-                </Dropdown.Item>
-                <Dropdown.Item
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  Notification 4
-                </Dropdown.Item>
-                <Dropdown.Item
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  Another notification
+                  {userEmailNotification.length}  Notificaciones por correo
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
@@ -127,7 +131,7 @@ function Header() {
               <Nav.Link
                 className="m-0"
                 href="/admin/login"
-                onClick={(e) =>logOutSession(e)}
+                onClick={(e) => logOutSession(e)}
               >
                 <span className="no-icon">Salir</span>
               </Nav.Link>
