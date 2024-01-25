@@ -17,8 +17,9 @@ import {
     OverlayTrigger,
     Tooltip,
     Dropdown,
-    Modal,
+
 } from "react-bootstrap";
+import Modal from 'react-modal';
 import axios from 'axios';
 import { urlGetSensorIds, urlGetSensorValueBySensor } from '../endpoints';
 import { CardBody, CardTitle } from 'reactstrap'
@@ -91,7 +92,6 @@ function ReportPage() {
     };
 
     const handleSensorChange = (e) => {
-        console.log("nuevo valor del sensor:", e.target.value);
         setSensor(e.target.value);
         setSensorSelected(e.target.value);
     }
@@ -105,7 +105,7 @@ function ReportPage() {
                             <Card.Title as="h4">Reporte Personalizado</Card.Title>
                         </Card.Header>
                         <Card.Body>
-                            <Row>
+                            <Row style={{ width: 600 }}>
                                 <Col>
                                     <Form className={` ${styles['form']} `}>
                                         <div>
@@ -147,7 +147,8 @@ function ReportPage() {
                                                 <button className={` ${projectStyles['button']} `} onClick={openPopup} type='button'>
                                                     Generar Reporte
                                                 </button>{isPopupOpen &&
-                                                    <PopupPage isOpen={isPopupOpen} OnClose={closePopup} sensor={sensorSelected} reporte={report} variable={variable} dateFrom={selectedFromDate} dateTo={selectedToDate} />}
+                                                    <PopupPage isOpen={isPopupOpen} OnClose={closePopup} sensor={sensorSelected} reporte={report}
+                                                        variable={variable} dateFrom={selectedFromDate} dateTo={selectedToDate} />}
                                             </div>
                                             <div>
                                                 <button
@@ -184,7 +185,9 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
         switch (reporte) {
             case "1":
                 settitle("Diagrama de barras");
-                sethtmldiagram(await getBarrasDiagrama(sensor, variable, dateFrom, dateTo));
+                const a = await getBarrasDiagrama(sensor, variable, dateFrom, dateTo);
+                console.log("salio", a);
+                sethtmldiagram(a);
                 console.log("htmldiagram", htmldiagram);
                 break;
             case "2":
@@ -250,7 +253,7 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
                         axisX: {
                             showGrid: true,
                         },
-                        height: "245px",
+                        height: "300px",
                     }}
                     responsiveOptions={[
                         [
@@ -268,30 +271,7 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
                 />
             </div>
         );
-    }
-    return (
-        <Modal isOpen={isOpen} report={reporte}>
-            <Row className={styles['containerModal']}>
-                <Col>
-                    <Card>
-                        <Card.Header>
-                            <CardTitle>
-                                <div className={styles['divTitle']}>
-                                    <h1 className={styles['title']}>{title}</h1>
-                                </div>
-                            </CardTitle>
-                        </Card.Header>
-                        <CardBody>
-                            <div className="ct-chart" id="chartHours">
-                                {htmldiagram}
-                            </div>
-                        </CardBody>
-                    </Card>
-                </Col>
-            </Row>
-
-        </Modal>
-    );
+    };
     async function getPieDiagrama(sensor, variable, dateFrom, dateTo) {
         let dataChart = [];
         let labels = [];
@@ -342,7 +322,6 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
                 />
             </div>);
     };
-
     async function getLineasDiagrama(sensor, variable, dateFrom, dateTo) {
         let dataChart = [];
         let labels = [];
@@ -391,7 +370,8 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
                         low: 0,
                         high: 800,
                         showArea: false,
-                        height: "245px",
+                        height: "300px",
+
                         axisX: {
                             showGrid: true,
                         },
@@ -403,11 +383,88 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
                             right: 50,
                         },
                     }}
-
+                    responsiveOptions={[
+                        [
+                            "screen and (max-width: 640px)",
+                            {
+                                seriesBarDistance: 5,
+                                axisX: {
+                                    labelInterpolationFnc: function (value) {
+                                        return value[0];
+                                    },
+                                },
+                            },
+                        ],
+                    ]}
                 />
             </div>
         );
-    }
+    };
 
+    async function Download() {
+        // Crear el gráfico de Chartist
+        var chart = new chartist.Line('.ct-chart', {
+            labels: [1, 2, 3, 4],
+            series: [[5, 2, 8, 3]]
+        });
+
+        // Capturar el gráfico como una imagen base64
+        chart.on('created', function (data) {
+            var imgData = chart.container.toBase64Image();
+
+            // Crear un documento PDF
+            var doc = new jsPDF();
+            doc.addImage(imgData, 'PNG', 10, 10, 100, 50);
+
+            // Descargar el documento PDF al hacer clic en un enlace
+            doc.save('chart.pdf');
+        });
+    }
+    return (
+        <Modal style={{ paddingLeft: 100 }} isOpen={isOpen}>
+            <Row className={styles['containerModal']}>
+                <Col style={{ paddingLeft: 60 }}>
+                    <Card style={{ padding: 40 }}>
+                        <Card.Header>
+                            <Row>
+                                <Col>
+                                    <CardTitle>
+                                        <div >
+                                            <h1  >{title}</h1>
+                                        </div>
+                                    </CardTitle>
+                                </Col>
+
+                            </Row>
+                        </Card.Header>
+                        <CardBody>
+                            <Col>
+                                <Row>
+                                    <Col>
+                                        <div>
+                                            {htmldiagram}
+                                        </div>
+                                    </Col>
+
+                                </Row>
+                                <Row>
+
+                                    <Col>
+                                        <button className={` ${projectStyles['button']} `} type='button' onClick={OnClose} >Cerrar</button>
+                                    </Col>
+                                    <Col>
+                                        <butto className={` ${projectStyles['button']} `} type='button' onClick={Download}> Descargar</butto>
+                                    </Col>
+
+
+                                </Row>
+                            </Col>
+
+                        </CardBody>
+                    </Card>
+                </Col>
+            </Row>
+        </Modal>
+    );
 }
 export default ReportPage;

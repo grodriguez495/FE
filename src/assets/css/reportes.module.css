@@ -15,7 +15,7 @@
   align-items: center;
   background-size: cover;
   justify-content: center;
- 
+ padding-left: 15%;
 }
 
 
@@ -29,7 +29,7 @@
 }
 
 .divTitle {
-  width: 100%;
+  /* width: 100%; */
   position: absolute;
   top: 50px;
   left: 50;
@@ -77,9 +77,9 @@
 }
 
 .title {
-  top: 50px;
+  top: 10px;
   left: 430px;
-  color: rgb(218, 101, 17);
+  color: rgb(0, 0, 0);
   height: 14px;
   position: center;
   padding-top: var(--dl-space-space-fiveunits);
@@ -88,7 +88,7 @@
 .divTitle {
   width: 100%;
   position: absolute;
-  top: 50px;
+  top: 10px;
   text-align: center;
 }
 
