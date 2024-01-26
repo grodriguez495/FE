@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
 import styles from '../assets/css/reportes.module.css'
@@ -176,6 +176,8 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
     const [title, settitle] = useState("");
     const [htmldiagram, sethtmldiagram] = useState("");
 
+
+
     useEffect(() => {
         if (isOpen)
             selectorDiagrama()
@@ -185,24 +187,20 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
         switch (reporte) {
             case "1":
                 settitle("Diagrama de barras");
-                const a = await getBarrasDiagrama(sensor, variable, dateFrom, dateTo);
-                console.log("salio", a);
-                sethtmldiagram(a);
-                console.log("htmldiagram", htmldiagram);
+                sethtmldiagram(await getBarrasDiagrama(sensor, variable, dateFrom, dateTo));
                 break;
             case "2":
                 settitle("Diagrama de pie");
                 sethtmldiagram(await getPieDiagrama(sensor, variable, dateFrom, dateTo));
-                console.log("htmldiagram", htmldiagram);
                 break;
             case "3":
                 settitle("Diagrama de lineas");
                 sethtmldiagram(await getLineasDiagrama(sensor, variable, dateFrom, dateTo));
-                console.log("htmldiagram", htmldiagram);
                 break;
 
         }
     };
+
     async function getBarrasDiagrama(sensor, variable, dateFrom, dateTo) {
         let dataChart = [];
         let labels = [];
@@ -241,35 +239,36 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
 
         }
         return (
-            <div className="ct-chart" id="chartActivity">
-                <ChartistGraph
-                    data={{
-                        labels: labels,
-                        series: [dataChart],
-                    }}
-                    type="Bar"
-                    options={{
-                        seriesBarDistance: 10,
-                        axisX: {
-                            showGrid: true,
-                        },
-                        height: "300px",
-                    }}
-                    responsiveOptions={[
-                        [
-                            "screen and (max-width: 640px)",
-                            {
-                                seriesBarDistance: 5,
-                                axisX: {
-                                    labelInterpolationFnc: function (value) {
-                                        return value[0];
-                                    },
+
+
+            <ChartistGraph
+                data={{
+                    labels: labels,
+                    series: [dataChart],
+                }}
+                type="Bar"
+                options={{
+                    seriesBarDistance: 10,
+                    axisX: {
+                        showGrid: true,
+                    },
+                    height: "300px",
+                }}
+                responsiveOptions={[
+                    [
+                        "screen and (max-width: 640px)",
+                        {
+                            seriesBarDistance: 5,
+                            axisX: {
+                                labelInterpolationFnc: function (value) {
+                                    return value[0];
                                 },
                             },
-                        ],
-                    ]}
-                />
-            </div>
+                        },
+                    ],
+                ]}
+            />
+
         );
     };
     async function getPieDiagrama(sensor, variable, dateFrom, dateTo) {
@@ -312,7 +311,7 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
         return (
             <div
                 className="ct-chart ct-perfect-fourth"
-                id="chartPreferences">
+                id="chartActivityPie">
                 <ChartistGraph
                     data={{
                         labels: labels,
@@ -359,7 +358,7 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
 
         }
         return (
-            <div className="ct-chart" id="chartHours">
+            <div className="ct-chart" id="chartActivityLineas">
                 <ChartistGraph
                     data={{
                         labels: labels,
@@ -401,25 +400,6 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
         );
     };
 
-    async function Download() {
-        // Crear el gráfico de Chartist
-        var chart = new chartist.Line('.ct-chart', {
-            labels: [1, 2, 3, 4],
-            series: [[5, 2, 8, 3]]
-        });
-
-        // Capturar el gráfico como una imagen base64
-        chart.on('created', function (data) {
-            var imgData = chart.container.toBase64Image();
-
-            // Crear un documento PDF
-            var doc = new jsPDF();
-            doc.addImage(imgData, 'PNG', 10, 10, 100, 50);
-
-            // Descargar el documento PDF al hacer clic en un enlace
-            doc.save('chart.pdf');
-        });
-    }
     return (
         <Modal style={{ paddingLeft: 100 }} isOpen={isOpen}>
             <Row className={styles['containerModal']}>
@@ -434,18 +414,17 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
                                         </div>
                                     </CardTitle>
                                 </Col>
-
                             </Row>
                         </Card.Header>
                         <CardBody>
                             <Col>
                                 <Row>
                                     <Col>
-                                        <div>
+                                        <div className="ct-chart" id="chartActivityBar">
                                             {htmldiagram}
                                         </div>
-                                    </Col>
 
+                                    </Col>
                                 </Row>
                                 <Row>
 
@@ -453,10 +432,11 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
                                         <button className={` ${projectStyles['button']} `} type='button' onClick={OnClose} >Cerrar</button>
                                     </Col>
                                     <Col>
-                                        <butto className={` ${projectStyles['button']} `} type='button' onClick={Download}> Descargar</butto>
+                                        {/*<button className={` ${projectStyles['button']} `} type='button' onClick={() => MyDocument(htmldiagram)}> Descargar</button>
+                                         <PDFDownloadLink document={<MyDocument htmldiagram={htmldiagram} />} fileName="example.pdf">
+                                            {({ blob, url, loading, error }) => (loading ? 'Cargando documento...' : 'Descargar PDF')}
+                                        </PDFDownloadLink> */}
                                     </Col>
-
-
                                 </Row>
                             </Col>
 
@@ -467,4 +447,82 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
         </Modal>
     );
 }
+// const styles1 = StyleSheet.create({
+//     page: {
+//         flexDirection: 'row',
+//         backgroundColor: '#E4E4E4'
+//     },
+//     section: {
+//         margin: 10,
+//         padding: 10,
+//         flexGrow: 1
+//     }
+// });
+
+
+// async function MyDocument  ( htmldiagram )  {
+// <div>
+//     <PDFViewer width="1000" height="600">
+//         <iframe title='PDF Viewer' width="100%" height="100%" src={pdfBlobUrl(htmldiagram)}/>
+//     </PDFViewer>
+// </div>
+    
+// };
+
+// const pdfBlobUrl = URL.createObjectURL(htmldiagram)(
+//     new Blob([
+//         <Document>
+//             <Page size="A4" style={styles1.page}>
+//                 <View style={styles1.section}>
+//                     <Text>Chart Exported to PDF</Text>
+//                     {htmldiagram}
+//                 </View>
+//             </Page>
+//         </Document>
+//     ])
+// );
+
+// async function DownloadFuntion(htmldiagram){
+// console.log("llego",htmldiagram);
+// //className="ct-chart" id="chartActivityBar"
+// const algoClass = htmldiagram.props.className;
+// const doc = new jsPDF("p", "px");
+// const elements = document.getElementsByClassName(algoClass); // (2)
+
+//   await creatPdf({ doc, elements }); // (3-5)
+
+//   doc.save(`charts.pdf`); 
+// }
+// async function creatPdf({
+//     doc,
+//     elements,
+//   }) {
+//     const padding = 10;
+//     const marginTop = 20;
+//     let top = marginTop;
+
+//     const el = elements;
+//     const imgData = await htmlToImage.toPng(el[0]);
+//     let elHeight = el.offsetHeight;
+//     let elWidth = el.offsetWidth;
+
+//     const pageWidth = doc.internal.pageSize.getWidth();
+
+//     if (elWidth > pageWidth) {
+//       const ratio = pageWidth / elWidth;
+//       elHeight = elHeight * ratio - padding * 2;
+//       elWidth = elWidth * ratio - padding * 2;
+//     }
+
+//     const pageHeight = doc.internal.pageSize.getHeight();
+
+//     if (top + elHeight > pageHeight) {
+//       doc.addPage();
+//       top = marginTop;
+//     }
+//     doc.addImage(imgData, "PNG", padding, top, elWidth, elHeight, `image`);
+//     top += elHeight + marginTop;
+//   }
+
 export default ReportPage;
+

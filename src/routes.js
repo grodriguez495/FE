@@ -6,6 +6,7 @@ import Maps from "views/Maps.js";
 import Notifications from "views/Notifications.js";
 import Login from "views/Login.js";
 import NewUser from "views/NewUser.js";
+import EditUser from "views/EditUser.js"
 
 const dashboardRoutes = [
  
@@ -63,6 +64,13 @@ const dashboardRoutes = [
     name: "Usuario Nuevo",
     icon: "nc-icon nc-bell-55",
     component: NewUser,
+    layout: "/admin"
+  },
+  {
+    path: "/editarUsuario",
+    name: "Editar Nuevo",
+    icon: "nc-icon nc-bell-55",
+    component: EditUser,
     layout: "/admin"
   }
 ];

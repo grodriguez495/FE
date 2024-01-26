@@ -33,21 +33,22 @@ function Header() {
     const currentEmail = localStorage.getItem("email");
     const phone = localStorage.getItem("phone")
 
-    const notificationDataResponse = await axios.get(urlGetActiveNotificationSendByDate, {
-      params: {
-        email: currentEmail,
-        phone: phone
-      }
-    });
-    setUserNotification(notificationDataResponse.data);
-    const smsNotifications = notificationDataResponse.data.filter(x => x.alertType === 2);
-    const emailNotifications = notificationDataResponse.data.filter(x => x.alertType === 1);
-    console.log("notificationDataResponse.data", notificationDataResponse.data)
-    console.log("smsNotifications", smsNotifications)
-    console.log("emailNotifications", emailNotifications)
-    setUserEmailNotification(emailNotifications);
-    setUserSmsNotification(smsNotifications);
+    if (currentEmail != null && phone != null) {
+      const notificationDataResponse = await axios.get(urlGetActiveNotificationSendByDate, {
+        params: {
+          email: currentEmail,
+          phone: phone
+        }
+      });
+      setUserNotification(notificationDataResponse.data);
+      const smsNotifications = notificationDataResponse.data.filter(x => x.alertType === 2);
+      const emailNotifications = notificationDataResponse.data.filter(x => x.alertType === 1);
+      setUserEmailNotification(emailNotifications);
+      setUserSmsNotification(smsNotifications);
+    }
   }
+
+
 
   const logOutSession = (e) => {
     localStorage.removeItem("userId");

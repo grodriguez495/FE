@@ -19,6 +19,7 @@ import {
   Dropdown,
 } from "react-bootstrap";
 import axios from 'axios';
+import { TramRounded } from "@mui/icons-material";
 
 function Dashboard() {
   const [sensorId, setSensorId] = useState([]);
@@ -27,7 +28,7 @@ function Dashboard() {
   const [dataChart, setDataChart] = useState([]);
   const [totalSensores, setTotalSensores] = useState(null);
   const [userNotification, setUserNotification] = useState([]);
-  const [valuesPie, setValuesPie] = useState([]);
+  const [userNotificationTable, setuserNotificationTable] = useState([]);
 
   const getSensorIdsResponse = async () => {
     const { data } = await axios.get(urlGetSensorIds);
@@ -46,6 +47,7 @@ function Dashboard() {
       }
     });
     setUserNotification(notificationDataResponse.data);
+    setuserNotificationTable(notificationDataResponse.data.splice(0,4));
   }
   useEffect(() => {
     getUserNotificationResponse();
@@ -71,8 +73,6 @@ function Dashboard() {
     const datachartResponse = data.data.map(y => y.values)
     setLabels(labelresponse);
     setDataChart(datachartResponse);
-    setValuesPie(data);
-    console.log("dataChart",dataChart)
   }
   async function handleNotificationSoftDelete(notificationId) {
 
@@ -269,7 +269,48 @@ function Dashboard() {
               </Card.Body>
             </Card>
           </Col>
-          <Col md="7">
+          <Col md="6">
+            <Card>
+              <Card.Header>
+                <Card.Title as="h4">Variables tomadas del sensor {selectedItem}</Card.Title>
+                <p className="card-category"></p>
+              </Card.Header>
+              <Card.Body>
+                <div className="ct-chart" id="chartHours">
+                  <ChartistGraph
+                    data={{
+                      labels: labels,
+                      series: [dataChart],
+                    }}
+                    type="Line"
+                    options={{
+                      low: 0,
+                      high: 800,
+                      showArea: true,
+                      height: "245px",
+                      axisX: {
+                        showGrid: true,
+                      },
+                      lineSmooth: true,
+                      showLine: true,
+                      showPoint: true,
+                      fullWidth: true,
+                      chartPadding: {
+                        right: 50,
+                      },
+                    }}
+
+                  />
+                </div>
+              </Card.Body>
+              <Card.Footer>
+
+              </Card.Footer>
+            </Card>
+          </Col>
+        </Row>
+        <Row>
+        <Col md="7">
             <Card className="card-tasks">
               <Card.Header>
                 <Card.Title as="h4">Historia de alertas</Card.Title>
@@ -281,7 +322,8 @@ function Dashboard() {
                     <tbody>
 
                       {
-                        (userNotification).map((notification) => (
+                        
+                        (userNotificationTable).map((notification) => (
                           <tr key={notification.alertId}>
 
                             <td>

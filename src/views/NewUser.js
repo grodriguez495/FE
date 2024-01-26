@@ -30,7 +30,7 @@ const NewUser = (props) => {
     setRole(e.target.value);
   }
   const backHome = () => {
-    history.push("/Login");
+    history.push("/admin/login");
   }
 
   const handleChange = e => {
@@ -100,7 +100,7 @@ const NewUser = (props) => {
       }).then(response => {
         if (response.status === 200) {
 
-          history.push("/login")
+          history.push("/admin/login")
 
         } else {
           alert('El usuario o la password es incorrecta');
