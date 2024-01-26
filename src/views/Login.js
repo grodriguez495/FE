@@ -27,7 +27,9 @@ function Login(props) {
     });
   }
   async function logginSesion(e) {
+   
     e.preventDefault()
+    localStorage.clear();
     if (ValidateData()) {
       await axios.post(
         urlLogin, {
@@ -41,7 +43,7 @@ function Login(props) {
             localStorage.setItem("roleId", respuesta.roleId);
             localStorage.setItem("email", respuesta.email)
             localStorage.setItem("phone", respuesta.phone)
-            history.push("/home")
+            history.push("/admin/dashboard")
           } else {
             alert('El usuario o la password es incorrecta');
           }
@@ -54,7 +56,7 @@ function Login(props) {
   const cancelSesion = (e) => {
     form.email = " ";
     form.password = " ";
-    history.push("/login");
+    history.push("/admin/login");
   }
 
   const ValidateData = () => {
@@ -100,12 +102,12 @@ function Login(props) {
           className={` ${styles['textinput1']} ${projectStyles['input']} ${errors.password ? styles['error'] : ""}`}
           onChange={handleChange}
         />
-        <Link to="/admin/dashboard" id="registrar" className={styles['navlink']}>
+        <Link to="/admin/usuarioNuevo" id="registrar" className={styles['navlink']}>
           ¿No tienes usuario?
         </Link>
         <span>No tienes usuario</span>
         <button className={` ${styles['navlink1']} ${projectStyles['button']} `}   href="/admin/dashboard" onClick={(e) => logginSesion(e)}>Ingresar</button>
-        <button className={` ${styles['navlink2']} ${projectStyles['button']}`} onClick={(e) => cancelSesion(e)}>Cancelar</button>
+        <button className={` ${styles['navlink2']} ${projectStyles['button']}`} href="/admin/login" onClick={(e) => cancelSesion(e)}>Cancelar</button>
 
       </form>
     </div>

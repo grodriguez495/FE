@@ -56,20 +56,19 @@ function BasicMenu(props) {
   async function handleEdit(user) {
     console.log(user)
     history.push({
-      pathname: '/edit-user',
+      pathname: '/admin/editarUsuario',
       state: user.userId,
     });
 
   }
+
   const handleSoftDelete = (user) => {
 
     axios.delete(urlDeleteUSer + user.userId)
       .then(response => {
-
-        console.log(response);
         if (response.status === 200) {
 
-          history.push("/users-dashboard")
+          history.push("/admin/table")
 
         } else {
           alert('No se encontro el usuario');
@@ -119,9 +118,7 @@ function UserTableList(props) {
     getUsersResponse();
   }, [])
 
-  const returnDashboard = (e) => {
-    history.push("/dashboard");
-  }
+  
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const emptyRows =

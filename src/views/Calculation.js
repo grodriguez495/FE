@@ -1,115 +1,50 @@
 import axios from 'axios';
-import { urlGetSensorValues, urlGetSensorValuesByDatesAndVariable,urlGetSensorValueBySensor } from '../endpoints';
+import { urlGetSensorValues, urlGetSensorValuesByDatesAndVariable,urlGetSensorValueBySensor,urlGetSensorValuesByDatesAndVariableAndSensor } from '../endpoints';
 
-export async function getBarrasPM25Data(dateFrom, dateTo, variableId) {
-    const labels = getDaysLabels(dateFrom, dateTo);
-    let data = await getsensorValuesByDateAndVariable(dateFrom, dateTo, variableId);
-    return {
 
-        labels,
-        datasets: [
-
-            {
-                label: 'Pm25',
-                data ,
-                backgroundColor: 'green',
-                borderColor: 'black',
-                borderWidth: 1,
-            }
-        ]
-    };
+export async function getBarrasPM25Data(sensor,dateFrom, dateTo, variableId) {
+    let data = await getsensorValuesByDateAndVariable(sensor,dateFrom, dateTo, variableId);
+    return data;
 };
-export async function getBarrasPM10Data(dateFrom, dateTo, variableId) {
-    const labels = getDaysLabels(dateFrom, dateTo);
-    let data = await getsensorValuesByDateAndVariable(dateFrom, dateTo, variableId);
-    return {
-
-        labels,
-        datasets: [
-
-            {
-                label: 'Pm10',
-                data,
-                backgroundColor: 'green',
-                borderColor: 'black',
-                borderWidth: 1,
-            }
-        ]
-    };
-};
-export async function getBarrasCO2Data(dateFrom, dateTo, variableId) {
-    const labels = getDaysLabels(dateFrom, dateTo);
-    let data = await getsensorValuesByDateAndVariable(dateFrom, dateTo, variableId);
+export async function getBarrasPM10Data(sensor,dateFrom, dateTo, variableId) {
     
-    return {
-
-        labels,
-        datasets: [
-
-            {
-                label: 'Co2',
-                data,
-                backgroundColor: 'green',
-                borderColor: 'black',
-                borderWidth: 1,
-            }
-        ]
-    };
+    let data = await getsensorValuesByDateAndVariable(sensor,dateFrom, dateTo, variableId);
+    return data;
 };
-export async function getBarrasTemperatureData(dateFrom, dateTo, variableId) {
-    const labels = getDaysLabels(dateFrom, dateTo);
-    let data = await getsensorValuesByDateAndVariable(dateFrom, dateTo, variableId);   
-    return {
-
-        labels,
-        datasets: [
-
-            {
-                label: 'Temperature',
-                data,
-                backgroundColor: 'green',
-                borderColor: 'black',
-                borderWidth: 1,
-            }
-        ]
-    };
-}
-export async function getBarrasHumidityData(dateFrom, dateTo, variableId) {
-    const labels = getDaysLabels(dateFrom, dateTo);
-    let data = await getsensorValuesByDateAndVariable(dateFrom, dateTo, variableId);
+export async function getBarrasCO2Data(sensor,dateFrom, dateTo, variableId) {
+  
+    let data = await getsensorValuesByDateAndVariable(sensor,dateFrom, dateTo, variableId);
+    
+    return data;
+};
+export async function getBarrasTemperatureData(sensor,dateFrom, dateTo, variableId) {
    
-    return {
-
-        labels,
-        datasets: [
-
-            {
-                label: 'Humidity',
-                data,
-                backgroundColor: 'green',
-                borderColor: 'black',
-                borderWidth: 1,
-            }
-        ]
-    };
+    let data = await getsensorValuesByDateAndVariable(dateFrom, dateTo, variableId);   
+    return data;
+}
+export async function getBarrasHumidityData(sensor,dateFrom, dateTo, variableId) {
+   
+    let data = await getsensorValuesByDateAndVariable(sensor,dateFrom, dateTo, variableId);
+   
+    return data;
 };
 
-export async function getSensorValuesByDatesAndVariableResponse(dateFrom, dateTo, variableId) {
+export async function getSensorValuesByDatesAndVariableResponse(sensor,dateFrom, dateTo, variableId) {
 
-    const { data } = await axios.get(urlGetSensorValuesByDatesAndVariable, {
+    const { data } = await axios.get(urlGetSensorValuesByDatesAndVariableAndSensor, {
         params: {
             variableId: variableId,
             dateFrom: dateFrom,
-            dateTo: dateTo
+            dateTo: dateTo,
+            sensor: sensor
         }
     });
-    var result = data.filter(element => element.variableId === variableId).map(sensor => parseFloat(sensor.value))
-    console.log("respuesta del BE", result);
+    var result = data;
    
 return result
 }
-export async function getsensorValuesByDateAndVariable(dateFrom, dateTo, variableId ) {
-    return await  getSensorValuesByDatesAndVariableResponse(dateFrom, dateTo, variableId );
+export async function getsensorValuesByDateAndVariable(sensor,dateFrom, dateTo, variableId ) {
+    return await  getSensorValuesByDatesAndVariableResponse(sensor,dateFrom, dateTo, variableId );
 };
 export function getDaysLabels(dateFrom, dateTo) {
     for (var arr = [], dt = new Date(dateFrom); dt <= new Date(dateTo); dt.setDate(dt.getDate() + 1)) {
@@ -122,7 +57,6 @@ export function getDaysLabels(dateFrom, dateTo) {
 
         arr.push([year, month, day].join('-'));
     }
-    console.log("date", arr);
     return arr;
 };
 export function generarNumero(numero) {
@@ -133,210 +67,49 @@ export function colorRGBA() {
     var coolor = "(" + generarNumero(105) + "," + generarNumero(105) + "," + generarNumero(105) + "," + generarNumero(1) + ")";
     return "rgba" + coolor;
 }
-export async function getPiePM25Data(dateFrom, dateTo, variableId) {
-    var Datelabels = getDaysLabels(dateFrom, dateTo);
-    var colorsArray = [];
-    for (let i = 0; i < Datelabels.length; i++) {
-        colorsArray.push(colorRGBA());
-    }
-    let data = await getsensorValuesByDateAndVariable(dateFrom, dateTo, variableId);
-    
-    return {
-
-        labels: Datelabels
-        ,
-        datasets: [
-            {
-                label: 'Variable por dia',
-                data,
-                backgroundColor: colorsArray,
-                borderColor: colorsArray,
-                borderWidth: 1,
-            },
-        ]
-    };
+export async function getPiePM25Data(sensor,dateFrom, dateTo, variableId) {
+   
+    let data = await getsensorValuesByDateAndVariable(sensor,dateFrom, dateTo, variableId);  
+    return data;
 };
-export async function getPiePM10Data(dateFrom, dateTo, variableId) {
-    var Datelabels = getDaysLabels(dateFrom, dateTo);
-    var colorsArray = [];
-    for (let i = 0; i < Datelabels.length; i++) {
-        colorsArray.push(colorRGBA());
-    }
-    let data = await getsensorValuesByDateAndVariable(dateFrom, dateTo, variableId);
+export async function getPiePM10Data(sensor,dateFrom, dateTo, variableId) {
     
-    return {
-
-        labels: getDaysLabels(dateFrom, dateTo),
-        datasets: [
-            {
-                label: 'Variable por dia',
-                data,
-                backgroundColor: colorsArray,
-                borderColor: colorsArray,
-                borderWidth: 1,
-            },
-        ]
-    };
+    let data = await getsensorValuesByDateAndVariable(sensor,dateFrom, dateTo, variableId);   
+    return data;
 };
-export async function getPieCO2Data(dateFrom, dateTo, variableId) {
-    var Datelabels = getDaysLabels(dateFrom, dateTo);
-    var colorsArray = [];
-    for (let i = 0; i < Datelabels.length; i++) {
-        colorsArray.push(colorRGBA());
-    }
-    let data = await getsensorValuesByDateAndVariable(dateFrom, dateTo, variableId);
-    
-    return {
-        labels: getDaysLabels(dateFrom, dateTo),
-        datasets: [
-            {
-                label: 'Variable por dia',
-                data,
-                backgroundColor: colorsArray,
-                borderColor: colorsArray,
-                borderWidth: 1,
-            },
-        ]
-    };
+export async function getPieCO2Data(sensor,dateFrom, dateTo, variableId) {
+    let data = await getsensorValuesByDateAndVariable(sensor,dateFrom, dateTo, variableId);   
+    return data;
 };
-export async function getPieTemperatureData(dateFrom, dateTo, variableId) {
-    var Datelabels = getDaysLabels(dateFrom, dateTo);
-    var colorsArray = [];
-    for (let i = 0; i < Datelabels.length; i++) {
-        colorsArray.push(colorRGBA());
-    }
-    let data = await getsensorValuesByDateAndVariable(dateFrom, dateTo, variableId);
-    
-    return {
-
-        labels: getDaysLabels(dateFrom, dateTo),
-        datasets: [
-            {
-                label: 'Variable por dia',
-                data,
-                backgroundColor: colorsArray,
-                borderColor: colorsArray,
-                borderWidth: 1,
-            },
-        ]
-    };
+export async function getPieTemperatureData(sensor,dateFrom, dateTo, variableId) {
+   
+    let data = await getsensorValuesByDateAndVariable(sensor,dateFrom, dateTo, variableId); 
+    return data;
 };
-export async function getPieHumidityData(dateFrom, dateTo, variableId) {
-    var Datelabels = getDaysLabels(dateFrom, dateTo);
-    var colorsArray = [];
-    for (let i = 0; i < Datelabels.length; i++) {
-        colorsArray.push(colorRGBA());
-    }
-    let data = await getsensorValuesByDateAndVariable(dateFrom, dateTo, variableId);
-    
-    return {
-
-        labels: getDaysLabels(dateFrom, dateTo),
-        datasets: [
-            {
-                label: 'Variable por dia',
-                data,
-                backgroundColor: colorsArray,
-                borderColor: colorsArray,
-                borderWidth: 1,
-            },
-        ]
-    };
+export async function getPieHumidityData(sensor,dateFrom, dateTo, variableId) {
+    let data = await getsensorValuesByDateAndVariable(sensor,dateFrom, dateTo, variableId);   
+    return data;
 };
-export async function getLinePM25Data(dateFrom, dateTo, variableId) {
-    const labels = getDaysLabels(dateFrom, dateTo);
-    let data = await getsensorValuesByDateAndVariable(dateFrom, dateTo, variableId);
+export async function getLinePM25Data(sensor,dateFrom, dateTo, variableId) {
     
-    return {
-
-        labels,
-        datasets: [
-
-            {
-                label: 'Pm25',
-                data,
-                backgroundColor: 'green',
-                borderColor: 'black',
-                borderWidth: 1,
-            }
-        ]
-    };
+    let data = await getsensorValuesByDateAndVariable(sensor,dateFrom, dateTo, variableId);
+    return data;
 };
-export async function getLinePM10Data(dateFrom, dateTo, variableId) {
-    const labels = getDaysLabels(dateFrom, dateTo);
-    let data = await getsensorValuesByDateAndVariable(dateFrom, dateTo, variableId);
-    
-    return {
-
-        labels,
-        datasets: [
-
-            {
-                label: 'Pm10',
-                data,
-                backgroundColor: 'green',
-                borderColor: 'black',
-                borderWidth: 1,
-            }
-        ]
-    };
+export async function getLinePM10Data(sensor,dateFrom, dateTo, variableId) {
+    let data = await getsensorValuesByDateAndVariable(sensor,dateFrom, dateTo, variableId);   
+    return data;
 };
-export async function getLineCO2Data(dateFrom, dateTo, variableId) {
-    const labels = getDaysLabels(dateFrom, dateTo);
-    let data = await getsensorValuesByDateAndVariable(dateFrom, dateTo, variableId);
-    
-    return {
-
-        labels,
-        datasets: [
-
-            {
-                label: 'Co2',
-                data,
-                backgroundColor: 'green',
-                borderColor: 'black',
-                borderWidth: 1,
-            }
-        ]
-    };
+export async function getLineCO2Data(sensor,dateFrom, dateTo, variableId) {
+     let data = await getsensorValuesByDateAndVariable(dateFrom, dateTo, variableId);   
+    return data;
 };
-export async function getLineTemperatureData(dateFrom, dateTo, variableId) {
-    const labels = getDaysLabels(dateFrom, dateTo);
-    let data = await getsensorValuesByDateAndVariable(dateFrom, dateTo, variableId);
-    
-    return {
-
-        labels,
-        datasets: [
-
-            {
-                label: 'Temperature',
-                data,
-                backgroundColor: 'green',
-                borderColor: 'black',
-                borderWidth: 1,
-            }
-        ]
-    };
+export async function getLineTemperatureData(sensor,dateFrom, dateTo, variableId) {
+    let data = await getsensorValuesByDateAndVariable(sensor,dateFrom, dateTo, variableId);  
+    return data;
 };
-export async function getLineHumidityData(dateFrom, dateTo, variableId) {
-    const labels = getDaysLabels(dateFrom, dateTo);
-    let data = await getsensorValuesByDateAndVariable(dateFrom, dateTo, variableId);
-    
-    return {
-
-        labels,
-        datasets: [
-
-            {
-                label: 'Humidity',
-                data,
-                backgroundColor: 'green',
-                borderColor: 'black',
-                borderWidth: 1,
-            }
-        ]
-    };
+export async function getLineHumidityData(sensor,dateFrom, dateTo, variableId) {
+    let data = await getsensorValuesByDateAndVariable(sensor,dateFrom, dateTo, variableId);
+    return data;
 };
 export async function getSensorDataPerSensor(sensor) {
 
@@ -345,8 +118,6 @@ export async function getSensorDataPerSensor(sensor) {
             sensor: sensor
         }
     });
-    console.log("respuesta del BE", data);
-
 return data
 }
 

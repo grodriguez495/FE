@@ -1,0 +1,194 @@
+.container {
+    width: 100%;
+    display: flex;
+    overflow: auto;
+    min-height: 100vh;
+    align-items: center;
+    border-color: #fffcfc;
+    border-style: solid;
+    border-width: 1px;
+    flex-direction: column;
+    background-size: cover;
+    justify-content: flex-start;
+   
+  }
+  
+  .text {
+    top: 50px;
+    left: 430px;
+    color: #0c0c0c;
+    position: absolute;
+    border-color: #0e0e0e;
+    border-width: 0px;
+  }
+  
+  .form {
+    top: 110px;
+    left: 0px;
+    right: 0px;
+    width: 556px;
+    height: 514px;
+    margin: auto;
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #ffffff;
+  }
+  
+  .text1 {
+    top: 69px;
+    left: 27px;
+    color: rgb(5, 5, 5);
+    position: absolute;
+    font-size: 20px;
+  }
+  
+  .textinput {
+    top: 62px;
+    left: 145px;
+    width: 354px;
+    position: absolute;
+  }
+  
+  .textinput.error {
+    border: 1px solid red;
+  }
+  
+  .text2 {
+    top: 141px;
+    left: 27px;
+    color: rgb(5, 5, 5);
+    position: absolute;
+    font-size: 20px;
+  }
+  
+  .text3 {
+    top: 210px;
+    left: 27px;
+    color: rgb(2, 2, 2);
+    position: absolute;
+    font-size: 20px;
+  }
+  
+  .textinput1 {
+    top: 132px;
+    left: 145px;
+    width: 354px;
+    position: absolute;
+  }
+  .textinput1.error {
+    border: 1px solid red;
+  }
+  
+  .textinput2 {
+    top: 200px;
+    left: 144px;
+    width: 354px;
+    position: absolute;
+  }
+  .textinput2.error {
+    border: 1px solid red;
+  }
+  
+  .navlink {
+  
+    left: 183px;
+    bottom: 30px;
+    position: absolute;
+    text-decoration: none;
+  }
+  
+  .navlink1 {
+    left: 299px;
+    bottom: 30px;
+    position: absolute;
+    text-decoration: none;
+  }
+  
+  .text4 {
+    top: 269px;
+    left: 27px;
+    color: rgb(0, 0, 0);
+    position: absolute;
+    font-size: 20px;
+  }
+  
+  .text5 {
+    top: 323px;
+    left: 27px;
+    color: #0c0c0c;
+    position: absolute;
+    font-size: 20px;
+  }
+  
+  .text6 {
+    top: 375px;
+    left: 27px;
+    color: #0c0c0c;
+    position: absolute;
+    font-size: 20px;
+  }
+  
+  .textinput3 {
+    top: 316px;
+    left: 143px;
+    width: 354px;
+    position: absolute;
+  }
+  .textinput3.error {
+    border: 1px solid red;
+  }
+  
+  .textinput4 {
+    top: 260px;
+    left: 143px;
+    width: 354px;
+    margin: auto;
+    position: absolute;
+  }
+  .textinput4.error {
+    border: 1px solid red;
+  }
+  
+  .select {
+    top: 50px;
+    flex: 1;
+    left: 142px;
+    width: 354px;
+    height: 28px;
+    position: absolute;
+    border-color: #757575;
+    border-width: 1px;
+    border-color: #919090;
+    border-style: double;
+    border-width: 1px;
+    border-radius: var(--dl-radius-radius-radius4);
+  }
+  
+  .selectDashboard {
+    top: 5px;
+    flex: 1;
+    left: 5px;
+    width: 354px;
+    height: 28px;
+    position: absolute;
+    border-color: #000000;
+    border-width: 1px;
+    border-color: #000000;
+    border-style: double;
+    border-width: 1px;
+    border-radius: var(--dl-radius-radius-radius4);
+  }
+  
+  .dropdown {
+    top: 120px;
+    flex: auto;
+    left: 142px;
+    width: 1px;
+    height: 20px;
+    position: absolute;
+    border-color: #000000;
+    border-width: 2px;
+    border-color: #000000;
+  }

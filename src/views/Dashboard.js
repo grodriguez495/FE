@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ChartistGraph from "react-chartist";
-import { urlGetSensorIds, urlGetSensorValueBySensor, urlGetActiveNotificationSend,urlDeleteNotification } from '../endpoints';
+import { urlGetSensorIds, urlGetSensorValueBySensor, urlGetActiveNotificationSend, urlDeleteNotification } from '../endpoints';
 import styles from '../assets/css/new-user.module.css'
 // react-bootstrap components
 import {
@@ -19,6 +19,7 @@ import {
   Dropdown,
 } from "react-bootstrap";
 import axios from 'axios';
+import { TramRounded } from "@mui/icons-material";
 
 function Dashboard() {
   const [sensorId, setSensorId] = useState([]);
@@ -27,6 +28,7 @@ function Dashboard() {
   const [dataChart, setDataChart] = useState([]);
   const [totalSensores, setTotalSensores] = useState(null);
   const [userNotification, setUserNotification] = useState([]);
+  const [userNotificationTable, setuserNotificationTable] = useState([]);
 
   const getSensorIdsResponse = async () => {
     const { data } = await axios.get(urlGetSensorIds);
@@ -45,6 +47,7 @@ function Dashboard() {
       }
     });
     setUserNotification(notificationDataResponse.data);
+    setuserNotificationTable(notificationDataResponse.data.splice(0,4));
   }
   useEffect(() => {
     getUserNotificationResponse();
@@ -65,29 +68,27 @@ function Dashboard() {
         sensor: eventKey
       }
     });
-   
+
     const labelresponse = data.data.map(x => x.variable)
     const datachartResponse = data.data.map(y => y.values)
     setLabels(labelresponse);
     setDataChart(datachartResponse);
-   
   }
-  async function handleNotificationSoftDelete(notificationId){
-    
+  async function handleNotificationSoftDelete(notificationId) {
+
     axios.delete(urlDeleteNotification + notificationId)
-    .then(response => {
+      .then(response => {
 
-      console.log(response);
-      if (response.status === 200) {
-       window.location.reload();
+        if (response.status === 200) {
+          window.location.reload();
 
-      } else {
-        alert('No se encontro la notificacion');
-      }
-    })
-    .catch(err => console.log(err));
+        } else {
+          alert('No se encontro la notificacion');
+        }
+      })
+      .catch(err => console.log(err));
   }
- 
+
   return (
 
     <>
@@ -130,7 +131,7 @@ function Dashboard() {
                   </Col>
                   <Col xs="9">
                     <div className="numbers">
-                      <p className="card-category">Numero de alertas enviadas </p>
+                      <p className="card-category">Numero de alertas enviadas sin marcar como leidas </p>
 
                       <Card.Title as="h4">{userNotification.length}</Card.Title>
                     </div>
@@ -141,7 +142,7 @@ function Dashboard() {
                 <hr></hr>
                 <div className="stats">
                   <i className="far fa-clock-o mr-1"></i>
-                  durante el dia de hoy
+                
                 </div>
               </Card.Footer>
             </Card>
@@ -167,7 +168,7 @@ function Dashboard() {
           </Col>
         </Row>
         <Row>
-          <Col md="8">
+          <Col md="6">
             <Card>
               <Card.Header>
                 <Card.Title as="h4">Variables tomadas del sensor {selectedItem}</Card.Title>
@@ -197,7 +198,7 @@ function Dashboard() {
                         right: 50,
                       },
                     }}
-                    
+
                   />
                 </div>
               </Card.Body>
@@ -206,7 +207,28 @@ function Dashboard() {
               </Card.Footer>
             </Card>
           </Col>
-        
+          <Col md="3">
+            <Card>
+              <Card.Header>
+                <Card.Title as="h4">Variables tomadas del sensor {selectedItem}</Card.Title>
+
+              </Card.Header>
+              <Card.Body>
+              <div
+                  className="ct-chart ct-perfect-fourth"
+                  id="chartPreferences"
+                >
+                  <ChartistGraph
+                    data={{
+                      labels: labels,
+                      series:  dataChart,
+                    }}
+                    type="Pie"
+                  />
+                </div>    
+              </Card.Body>
+            </Card>
+          </Col>
         </Row>
         <Row>
           <Col md="6">
@@ -247,7 +269,48 @@ function Dashboard() {
               </Card.Body>
             </Card>
           </Col>
-          <Col md="7">
+          <Col md="6">
+            <Card>
+              <Card.Header>
+                <Card.Title as="h4">Variables tomadas del sensor {selectedItem}</Card.Title>
+                <p className="card-category"></p>
+              </Card.Header>
+              <Card.Body>
+                <div className="ct-chart" id="chartHours">
+                  <ChartistGraph
+                    data={{
+                      labels: labels,
+                      series: [dataChart],
+                    }}
+                    type="Line"
+                    options={{
+                      low: 0,
+                      high: 800,
+                      showArea: true,
+                      height: "245px",
+                      axisX: {
+                        showGrid: true,
+                      },
+                      lineSmooth: true,
+                      showLine: true,
+                      showPoint: true,
+                      fullWidth: true,
+                      chartPadding: {
+                        right: 50,
+                      },
+                    }}
+
+                  />
+                </div>
+              </Card.Body>
+              <Card.Footer>
+
+              </Card.Footer>
+            </Card>
+          </Col>
+        </Row>
+        <Row>
+        <Col md="7">
             <Card className="card-tasks">
               <Card.Header>
                 <Card.Title as="h4">Historia de alertas</Card.Title>
@@ -259,7 +322,8 @@ function Dashboard() {
                     <tbody>
 
                       {
-                        (userNotification).map((notification) => (
+                        
+                        (userNotificationTable).map((notification) => (
                           <tr key={notification.alertId}>
 
                             <td>
