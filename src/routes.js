@@ -10,6 +10,14 @@ import EditUser from "views/EditUser.js"
 
 const dashboardRoutes = [
  
+   
+  {
+    path: "/",
+    name: "Dashboard",
+    icon: "nc-icon nc-chart-pie-35",
+    component: Dashboard,
+    layout: "/admin"
+  },
   {
     path: "/dashboard",
     name: "Dashboard",
@@ -57,7 +65,7 @@ const dashboardRoutes = [
     name: "Login",
     icon: "nc-icon nc-bell-55",
     component: Login,
-    layout: "/admin"
+    layout: ""
   },
   {
     path: "/usuarioNuevo",

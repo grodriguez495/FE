@@ -1,6 +1,6 @@
 
 import React, { Component } from "react";
-import { useLocation, Route, Switch } from "react-router-dom";
+import { useLocation, Route, Routes } from "react-router-dom";
 
 import AdminNavbar from "components/Navbars/AdminNavbar";
 import Footer from "components/Footer/Footer";
@@ -17,7 +17,12 @@ function Admin() {
   const [hasImage, setHasImage] = React.useState(true);
   const location = useLocation();
   const mainPanel = React.useRef(null);
+
+
+
   const getRoutes = (routes) => {
+
+
     return routes.map((prop, key) => {
       if (prop.layout === "/admin") {
         return (
@@ -28,10 +33,11 @@ function Admin() {
           />
         );
       } else {
-        return null;
+        return    <Route path ="/admin/login" element={<Login/>}/>;
       }
     });
   };
+
   React.useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -52,7 +58,7 @@ function Admin() {
         <div className="main-panel" ref={mainPanel}>
           <AdminNavbar />
           <div className="content">
-            <Switch>{getRoutes(routes)}</Switch>
+            {/* <Routes>{getRoutes(routes)}</Routes> */}
           </div>
           <Footer />
         </div>
