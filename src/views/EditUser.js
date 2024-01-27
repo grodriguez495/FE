@@ -70,13 +70,7 @@ function PerfilUsuario(state) {
 
  
         let url = urlGetUser + userId;
-        console.log("algo",url);
-        console.log("userId:",userId);
-        console.log("newName:", newName);
-        console.log("newEmail: ",newEmail);
-        console.log("newRole:",newRole);
-        console.log("newPhone:",newPhone);
-        console.log("newIsActive:",newIsActive);
+       
         let parameters ={
             userId,
             name: newName,

@@ -35,6 +35,12 @@
   justify-content: flex-start;
   background-color: #ffffff;
 }
+.abs-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
 
 .text1 {
   top: 69px;
@@ -45,10 +51,7 @@
 }
 
 .textinput {
-  top: 62px;
-  left: 145px;
-  width: 354px;
-  position: absolute;
+ 
 }
 
 .textinput.error {
