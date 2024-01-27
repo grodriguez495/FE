@@ -5,6 +5,18 @@ import axios from 'axios';
 import { urlNewUser, urlGetAvailableRoles } from '../endpoints'
 import projectStyles from '../assets/css/style.module.css'
 import styles from '../assets/css/new-user.module.css'
+import {
+  Badge,
+  Button,
+  Card,
+  Form,
+  Navbar,
+  Nav,
+  Container,
+  Row,
+  Col
+} from "react-bootstrap";
+import { alignPropType } from 'react-bootstrap/esm/types';
 
 const NewUser = (props) => {
   const { history } = props
@@ -111,97 +123,142 @@ const NewUser = (props) => {
   }
 
   return (
-    <div className={styles['container']}>
-      
-      <form onSubmit={ValidateData} className={styles['form']}>
-        <label id="Nombres" className={styles['text1']}>
-          Nombres
-        </label>
-        <input
-          required
-          name="name"
-          type="text"
-          id="InputNombre"
-          placeholder="Nombres"
-          className={` ${styles['textinput']} ${projectStyles['input']}  ${errors.name ? styles['error'] : ""}`}
-          onChange={handleChange}
-        />
-        <label id="Apellidos" className={styles['text2']}>
-          Apellidos
-        </label>
-        <input
-          required
-          name="last_name"
-          type="text"
-          id="inputApellidos"
-          placeholder="Apellidos"
-          className={` ${styles['textinput1']} ${projectStyles['input']} ${errors.lastName ? styles['error'] : ""}`}
-          onChange={handleChange}
-        />
-        <label id="Correo" className={styles['text3']}>
-          Correo
-        </label>
-        <input
-          required
-          name="email"
-          type="text"
-          id="Correo"
-          placeholder="Correo"
-          className={` ${styles['textinput2']} ${projectStyles['input']} ${errors.email ? styles['error'] : ""}`}
-          onChange={handleChange}
-        />
-        <label id="Contraseña" className={styles['text4']}>
-          Contraseña
-        </label>
-        <input
-          required
-          name="password"
-          type="text"
-          id="inputContraseña"
-          encType="Contraseña"
-          placeholder="Contraseña"
-          className={` ${styles['textinput4']} ${projectStyles['input']} ${errors.password ? styles['error'] : ""}`}
-          onChange={handleChange}
-        />
-        <label className={styles['text5']}>Telefono</label>
-        <input
-          required
-          name="phone"
-          type="text"
-          id="Telefono"
-          placeholder="Numero telefonico"
-          className={` ${styles['textinput3']} ${projectStyles['input']} ${errors.phone ? styles['error'] : ""}`}
-          onChange={handleChange}
-        />
-        <span className={styles['text6']}>Role</span>
-        <select
-          name="roleId"
-          required
-          className={styles['select']}
-          onChange={handleRoleChange}
-        >
-          <option value="Seleccione un Role">-- seleccione un role</option>
-          {
-            roles.map((role) => (<option value={role.id}>{role.name}</option>))
-          }
-        </select>
+    <>
+      <Container flex alig>
+        <Row>
+          <Col md="8">
+            <Card>
+              <Card.Header>
 
-        <button
-          to="/login"
-          id="Guardar"
-          className={` ${styles['navlink']} ${projectStyles['button']} `}
-          onClick={(e) => SaveNewUser(e)}
-        >
-          Guardar
-        </button>
-        <button
-          to="/login"
-          className={` ${styles['navlink1']} ${projectStyles['button']} `}
-          onClick={(e) => backHome(e)}>
-          Cancelar
-        </button>
-      </form>
-    </div>
+              </Card.Header>
+              <Card.Body >
+
+                <Form  >
+                  <Row>
+                    <Col className="pr-1" md="5">
+                      <Form.Group>
+
+                        <label>Nombres</label>
+                        <Form.Control
+                         name="name"
+                          placeholder="Nombres"
+                          id="InputNombre"
+                          className={`${styles['textinput']}  ${projectStyles['input']} ${errors.name ? styles['error'] : ""}`}
+                          required
+                          type="text"
+                          onChange={handleChange} />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className="pr-1" md="5">
+                      <Form.Group>
+                        <label>Apellidos</label>
+                        <Form.Control
+                          type="text"
+                          required
+                          name="last_name"
+                          id="inputApellidos"
+                          placeholder="Apellidos"
+                          className={`${styles['textinput']}  ${projectStyles['input']} ${errors.lastName ? styles['error'] : ""}`}
+                          onChange={handleChange} />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className="pr-1" md="5">
+                      <Form.Group>
+                        <label>Correo</label>
+                        <Form.Control
+                          required
+                          name="email"
+                          type="text"
+                          id="Correo"
+                          placeholder="Correo"
+                          className={`${styles['textinput']}  ${projectStyles['input']}  ${errors.email ? styles['error'] : ""}`}
+                          onChange={handleChange} />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className="pr-1" md="5">
+                      <Form.Group>
+                        <label>Contraseña</label>
+                        <Form.Control
+                          required
+                          name="password"
+                          type="password"
+                          id="inputContraseña"
+                          encType="Contraseña"
+                          placeholder="Contraseña"
+                          className={`${styles['textinput']}  ${projectStyles['input']} ${errors.password ? styles['error'] : ""}`}
+                          onChange={handleChange} />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  
+                  <Row>
+                    <Col className="pr-1" md="5">
+                      <Form.Group>
+                        <label>Telefono</label>
+                        <Form.Control
+                          required
+                          name="phone"
+                          type="text"
+                          id="Telefono"
+                          placeholder="Numero telefonico"
+                          className={`${styles['textinput']}  ${projectStyles['input']} ${errors.phone ? styles['error'] : ""}`}
+                          onChange={handleChange} />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className="pr-1" md="5">
+                      <Form.Group>
+                        <label>Role</label>
+                        <Form.Control
+                          as="select"
+                          name="roleId"
+                          required
+                          onChange={handleRoleChange} >
+                          <option value="Seleccione un Role">-- seleccione un role</option>
+                          {
+                            roles.map((role) => (<option value={role.id}>{role.name}</option>))
+                          }</Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <Row className=" pr-1 mb-6">
+                    <Col></Col>
+                    <Col >
+                      <button
+                        to="/admin/login"
+                        id="Guardar"
+                        className={` ${projectStyles['button']} `}
+                        variant="info"
+                        onClick={(e) => SaveNewUser(e)}>
+                        Guardar
+                      </button>
+                    </Col>
+                   
+                    <Col >
+                      <button
+                        to="/admin/login"
+                        className={` ${projectStyles['button']} `}
+                        onClick={(e) => backHome(e)}>
+                        Cancelar
+                      </button>
+                    </Col>
+                    <Col></Col>
+                  </Row>
+
+                </Form>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </>
   )
 }
 
