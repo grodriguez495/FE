@@ -11,11 +11,13 @@ function Sidebar({ color, image, routes }) {
   const activeRoute = (routeName) => {
     return location.pathname.indexOf(routeName) > -1 ? "active" : "";
   };
-  
+
   const currentEmail = localStorage.getItem("email");
   const phone = localStorage.getItem("phone")
   const userId = localStorage.getItem("userId");
   const roleId = localStorage.getItem("roleId")
+
+  const newRoutes = routes.slice(0, 6);
 
 
   if (currentEmail === null && phone === null && userId === null && roleId === null) {
@@ -29,8 +31,8 @@ function Sidebar({ color, image, routes }) {
         />
         <div className="sidebar-wrapper">
           <div className="logo d-flex align-items-center justify-content-start">
-          <a
-             
+            <a
+
               className="simple-text logo-mini mx-1"
             >
               <div className="logo-img">
@@ -68,29 +70,34 @@ function Sidebar({ color, image, routes }) {
             </a>
           </div>
           <Nav>
-            {routes.map((prop, key) => {
-              if (!prop.redirect)
-                return (
-                  <li
-                    className={
-                      prop.upgrade
-                        ? "active active-pro"
-                        : activeRoute(prop.layout + prop.path)
-                    }
-                    key={key}
-                  >
-                    <NavLink
-                      to={prop.layout + prop.path}
-                      className="nav-link"
-                      activeClassName="active"
+
+            {
+
+              newRoutes.map((prop, key) => {
+                if (!prop.redirect) {
+                  return (
+                    <li
+                      className={
+                        prop.upgrade
+                          ? "active active-pro"
+                          : activeRoute(prop.layout + prop.path)
+                      }
+                      key={key}
                     >
-                      <i className={prop.icon} />
-                      <p>{prop.name}</p>
-                    </NavLink>
-                  </li>
-                );
-              return null;
-            })}
+                      <NavLink
+                        to={prop.layout + prop.path}
+                        className="nav-link"
+                        activeClassName="active"
+                      >
+                        <i className={prop.icon} />
+                        <p>{prop.name}</p>
+                      </NavLink>
+                    </li>
+                  );
+
+                }
+                return null;
+              })}
           </Nav>
         </div>
       </div>
