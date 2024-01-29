@@ -61,14 +61,14 @@ const dashboardRoutes = [
   },
   {
     path: "/usuarioNuevo",
-    name: "Usuario Nuevo",
+    name: "Crear Usuario",
     icon: "nc-icon nc-bell-55",
     component: NewUser,
     layout: "/admin"
   },
   {
     path: "/editarUsuario",
-    name: "Editar Nuevo",
+    name: "Editar Usuario",
     icon: "nc-icon nc-bell-55",
     component: EditUser,
     layout: "/admin"

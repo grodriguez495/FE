@@ -102,7 +102,7 @@ function PerfilUsuario(state) {
                     <Col md="8">
                         <Card>
                             <Card.Header>
-                                <Card.Title as="h4">Editar Perfil</Card.Title>
+                                <Card.Title as="h4">Editar Usuario</Card.Title>
                             </Card.Header>
                             <Card.Body>
                                 <Form>

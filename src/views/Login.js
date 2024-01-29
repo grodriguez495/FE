@@ -87,7 +87,7 @@ function Login(props) {
           name="email"
           type="text"
           id="Email"
-          placeholder="Email"
+          placeholder="Correo"
           className={` ${styles['textinput']} ${projectStyles['input']} ${errors.email ? styles['error'] : ""} `}
           onChange={handleChange}
         />
@@ -98,7 +98,7 @@ function Login(props) {
           name="password"
           type="password"
           id="password"
-          placeholder="password"
+          placeholder="Contraseña"
           className={` ${styles['textinput1']} ${projectStyles['input']} ${errors.password ? styles['error'] : ""}`}
           onChange={handleChange}
         />
