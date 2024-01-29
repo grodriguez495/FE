@@ -8,7 +8,7 @@ import Sidebar from "components/Sidebar/Sidebar";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 
 import routes from "routes.js";
-
+import Login from "views/Login.js";
 import sidebarImage from "assets/img/sidebar-3.jpg";
 
 function Admin() {
@@ -28,9 +28,10 @@ function Admin() {
           />
         );
       } else {
-        return null;
-      }
-    });
+        return    <Route path ="/admin/login" element={<Login/>}/>;
+      }
+    });
+
   };
   React.useEffect(() => {
     document.documentElement.scrollTop = 0;
