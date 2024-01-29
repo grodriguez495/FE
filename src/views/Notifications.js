@@ -22,7 +22,7 @@ import TableCell from '@mui/material/TableCell';
 import { urlGetNotificationSend } from '../endpoints';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { FaThumbsUp, FaThumbsDown,FaBell } from "react-icons/fa"
+import { FaThumbsUp, FaThumbsDown, FaBell } from "react-icons/fa"
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -50,7 +50,7 @@ function Notifications() {
   };
   function TablePaginationActions(props) {
     const theme = useTheme();
-    const {count, page, rowsPerPage, onPageChange} = props;
+    const { count, page, rowsPerPage, onPageChange } = props;
 
     const handleFirstPageButtonClick = (event) => {
       onPageChange(event, 0);
@@ -119,7 +119,6 @@ function Notifications() {
         phone: phone
       }
     });
-    console.log("notificationDataResponse",notificationDataResponse.data);
     setUserNotification(notificationDataResponse.data);
   }
   useEffect(() => {
@@ -129,20 +128,19 @@ function Notifications() {
   }, [])
   return (
     <>
-      <div className="rna-container">
+      {/* <div className="rna-container">
         <NotificationAlert ref={notificationAlertRef} />
-      </div>
+      </div> */}
       <Container fluid>
-        <Card>
-          <Card.Header>
-            <Card.Title as="h4">Notificaciones enviadas</Card.Title>
-
-          </Card.Header>
-          <Card.Body>
-            <Row>
-              <Col md="12">
+        <Row>
+          <Col md="12">
+            <Card>
+              <Card.Header>
+                <Card.Title as="h4">Notificaciones enviadas</Card.Title>
+              </Card.Header>
+              <Card.Body className="table-full-width table-responsive px-0">
                 <TableContainer component={Paper}>
-                  <table sx={{ minWidth: 500 }}>
+                  <Table sx={{ minWidth: 500 }}>
                     <TableHead>
                       <TableRow>
                         <TableCell align="right">Id</TableCell>
@@ -154,91 +152,57 @@ function Notifications() {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {(rowsPerPage >0
-                      ? userNotification.slice(page * rowsPerPage,page*rowsPerPage + rowsPerPage)
-                      :userNotification).map((notification) => (
-                        <TableRow key={notification.alertId}>
-                          <TableCell component="th" scope="notification">
-                            {notification.alertId}
-                          </TableCell>
-                          <TableCell style={{ width: 160 }} align="right">
-                          {notification.timestamp}
-                          </TableCell>
-                          <TableCell style={{ width: 160 }} align="right">
-                          {notification.message}
-                          </TableCell>
-                          <TableCell style={{ width: 160 }} align="right">
-                          {notification.recipient}
-                          </TableCell>
-                          <TableCell style={{ width: 160 }} align="right">
-                          {notification.alertTypeName}
-                          </TableCell>
-                          <TableCell style={{ width: 160 }} align="right">
-                          {notification.isOpened ? <FaBell style={{ color: 'green', size: '50px' }} /> : <FaBell style={{ color: 'red', size: '50px' }} />}
-                          </TableCell>
-                        </TableRow>
-                      ))}{emptyRows > 0 && (
-                        <TableRow style={{ height: 53 * emptyRows }}>
-                          <TableCell colSpan={6} />
-                        </TableRow>
-                      )}
+                      {(rowsPerPage > 0
+                        ? userNotification.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : userNotification).map((notification) => (
+                          <TableRow key={notification.alertId}>
+                            <TableCell style={{ width: 20 }} align="right" component="th" scope="notification">
+                              {notification.alertId}
+                            </TableCell>
+                            <TableCell style={{ width: 160 }} align="right">
+                              {notification.timestamp}
+                            </TableCell>
+                            <TableCell style={{ width: 160 }} align="right">
+                              {notification.message}
+                            </TableCell>
+                            <TableCell style={{ width: 160 }} align="right">
+                              {notification.recipient}
+                            </TableCell>
+                            <TableCell style={{ width: 160 }} align="right">
+                              {notification.alertTypeName}
+                            </TableCell>
+                            <TableCell style={{ width: 160 }} align="right">
+                              {notification.isOpened ? <FaBell style={{ color: 'green', size: '50px' }} /> : <FaBell style={{ color: 'red', size: '50px' }} />}
+                            </TableCell>
+                          </TableRow>
+                        ))}{emptyRows > 0 && (
+                          <TableRow style={{ height: 53 * emptyRows }}>
+                            <TableCell colSpan={6} />
+                          </TableRow>
+                        )}
                     </TableBody>
                     <TableFooter>
                       <TableRow>
                         <TablePagination
-                        rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                          rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                           colSpan={6}
                           count={userNotification.length}
                           rowsPerPage={rowsPerPage}
-                          page={page}                       
+                          page={page}
                           onPageChange={handleChangePage}
                           onRowsPerPageChange={handleChangeRowsPerPage}
                           ActionsComponent={TablePaginationActions}
                         />
                       </TableRow>
                     </TableFooter>
-                  </table>
+                  </Table>
                 </TableContainer>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
 
-              </Col>
-
-            </Row>
-          </Card.Body>
-        </Card>
-        {/* Mini Modal */}
-        <Modal
-          className="modal-mini modal-primary"
-          show={showModal}
-          onHide={() => setShowModal(false)}
-        >
-          <Modal.Header className="justify-content-center">
-            <div className="modal-profile">
-              <i className="nc-icon nc-bulb-63"></i>
-            </div>
-          </Modal.Header>
-          <Modal.Body className="text-center">
-            <p>Always have an access to your profile</p>
-          </Modal.Body>
-          <div className="modal-footer">
-            <Button
-              className="btn-simple"
-              type="button"
-              variant="link"
-              onClick={() => setShowModal(false)}
-            >
-              Back
-            </Button>
-            <Button
-              className="btn-simple"
-              type="button"
-              variant="link"
-              onClick={() => setShowModal(false)}
-            >
-              Close
-            </Button>
-          </div>
-        </Modal>
-        {/* End Modal */}
+      
       </Container>
     </>
   );

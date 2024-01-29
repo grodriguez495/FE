@@ -129,10 +129,9 @@ const NewUser = (props) => {
           <Col md="8">
             <Card>
               <Card.Header>
-
+              <Card.Title as="h4">Crear Usuario</Card.Title>
               </Card.Header>
               <Card.Body >
-
                 <Form  >
                   <Row>
                     <Col className="pr-1" md="5">
