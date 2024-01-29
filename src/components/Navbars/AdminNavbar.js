@@ -62,7 +62,7 @@ function Header() {
         return routes[i].name;
       }
     }
-    return "Brand";
+    return "";
   };
   return (
     <Navbar bg="light" expand="lg">
