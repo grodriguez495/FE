@@ -13,7 +13,7 @@ import { withRouter } from 'react-router-dom';
 function Login(props) {
   const { history } = props
   const cookies = new Cookies();
-
+  localStorage.clear();
   const [form, setForm] = useState({
     email: '',
     password: ''

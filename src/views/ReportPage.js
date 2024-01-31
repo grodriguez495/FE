@@ -175,7 +175,7 @@ function ReportPage() {
 function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateTo }) {
     const [title, settitle] = useState("");
     const [htmldiagram, sethtmldiagram] = useState("");
-
+    
 
 
     useEffect(() => {
@@ -267,7 +267,7 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
                         },
                     ],
                 ]}
-            />
+                            />
 
         );
     };
@@ -318,7 +318,7 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
                         series: dataChart,
                     }}
                     type="Pie"
-                />
+                                    />
             </div>);
     };
     async function getLineasDiagrama(sensor, variable, dateFrom, dateTo) {
@@ -395,7 +395,7 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
                             },
                         ],
                     ]}
-                />
+                                    />
             </div>
         );
     };
@@ -423,30 +423,83 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
                                         <div className="ct-chart" id="chartActivityBar">
                                             {htmldiagram}
                                         </div>
-
                                     </Col>
-                                </Row>
-                                <Row>
-
-                                    <Col>
-                                        <button className={` ${projectStyles['button']} `} type='button' onClick={OnClose} >Cerrar</button>
-                                    </Col>
-                                    <Col>
-                                        {/*<button className={` ${projectStyles['button']} `} type='button' onClick={() => MyDocument(htmldiagram)}> Descargar</button>
+                                </Row>                              
+                            </Col>
+                        </CardBody>                      
+                        <Card.Footer  style={{ padding: 40, textAlign:'center'}}  >                       
+                            <Row className="pt-8">
+                                <Col>
+                                    <button className={` ${projectStyles['button']} `} type='button' onClick={OnClose} >Cerrar</button>
+                                </Col>
+                                <Col> {/*<button className={` ${projectStyles['button']} `} type='button' onClick={() => MyDocument(htmldiagram)}> Descargar</button>
                                          <PDFDownloadLink document={<MyDocument htmldiagram={htmldiagram} />} fileName="example.pdf">
                                             {({ blob, url, loading, error }) => (loading ? 'Cargando documento...' : 'Descargar PDF')}
                                         </PDFDownloadLink> */}
-                                    </Col>
-                                </Row>
-                            </Col>
+                                     {/* <button className={` ${projectStyles['button']} `} type='button' onClick={generatePDF(chartRef)}> Descargar</button>   */}
+                                </Col>
+                            </Row>
+                        </Card.Footer>
 
-                        </CardBody>
                     </Card>
                 </Col>
             </Row>
         </Modal>
     );
 }
+
+
+// const generatePDF = (chartRef) => {
+//     const chartElement = chartRef.current;
+//     console.log("llego este chartElement",chartElement);
+//     if (chartElement) {
+//       const doc = new jsPDF();
+//       doc.text('Ejemplo de gráfico', 10, 10);
+//       // Obtener los datos de la imagen del gráfico
+//       const imageData = chartElement.toDataURL('image/png');
+//       // Agregar la imagen al documento PDF
+//       doc.addImage(imageData, 'PNG', 10, 20, 180, 100); 
+//       // Guardar o mostrar el documento PDF
+//       doc.save('chart.pdf');
+//       // doc.output('dataurlnewwindow'); // Mostrar en una nueva ventana del navegador
+//     }
+//   };
+//  const ChartToPDFExample = () => {
+    
+  
+//     const generatePDF = () => {
+//       const chartElement = chartRef.current;
+//       if (chartElement) {
+//         const doc = new jsPDF();
+//         doc.text('Ejemplo de gráfico', 10, 10);
+//         // Obtener los datos de la imagen del gráfico
+//         const imageData = chartElement.toDataURL('image/png');
+//         // Agregar la imagen al documento PDF
+//         doc.addImage(imageData, 'PNG', 10, 20, 180, 100); 
+//         // Guardar o mostrar el documento PDF
+//         doc.save('chart.pdf');
+//         // doc.output('dataurlnewwindow'); // Mostrar en una nueva ventana del navegador
+//       }
+//     };
+  
+//     const chartData = {
+//       labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'],
+//       series: [[5, 2, 4, 2, 0]]
+//     };
+  
+//     const chartOptions = {
+//       width: 400,
+//       height: 300
+//     };
+  
+//     return (
+//       <div>
+//         <ChartistGraph data={chartData} options={chartOptions} type="Bar" ref={chartRef} />
+//         <button onClick={generatePDF}>Generar PDF del Gráfico</button>
+//       </div>
+//     );
+//   };
+  
 // const styles1 = StyleSheet.create({
 //     page: {
 //         flexDirection: 'row',
@@ -466,7 +519,7 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
 //         <iframe title='PDF Viewer' width="100%" height="100%" src={pdfBlobUrl(htmldiagram)}/>
 //     </PDFViewer>
 // </div>
-    
+
 // };
 
 // const pdfBlobUrl = URL.createObjectURL(htmldiagram)(
