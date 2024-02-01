@@ -25,8 +25,9 @@ import { urlGetSensorIds, urlGetSensorValueBySensor } from '../endpoints';
 import { CardBody, CardTitle } from 'reactstrap'
 import { getBarrasCO2Data, getBarrasHumidityData, getBarrasPM10Data, getBarrasPM25Data, getBarrasTemperatureData, getLineCO2Data, getLineHumidityData, getLinePM10Data, getLinePM25Data, getLineTemperatureData, getPieCO2Data, getPieHumidityData, getPiePM10Data, getPiePM25Data, getPieTemperatureData } from './Calculation'
 import ChartistGraph from "react-chartist";
+import CanvasJSReact from "@canvasjs/charts";
 
-function ReportPage() {
+function ReportPage(){
 
     const [selectedFromDate, setSelectedFromDate] = useState(null);
     const [selectedToDate, setSelectedToDate] = useState(null);
@@ -175,8 +176,7 @@ function ReportPage() {
 function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateTo }) {
     const [title, settitle] = useState("");
     const [htmldiagram, sethtmldiagram] = useState("");
-    
-
+    var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
     useEffect(() => {
         if (isOpen)
@@ -187,7 +187,9 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
         switch (reporte) {
             case "1":
                 settitle("Diagrama de barras");
-                sethtmldiagram(await getBarrasDiagrama(sensor, variable, dateFrom, dateTo));
+                let algo = await getBarrasDiagrama(sensor, variable, dateFrom, dateTo)
+                console.log("await getBarrasDiagrama(sensor, variable, dateFrom, dateTo)",algo)
+                sethtmldiagram(algo);
                 break;
             case "2":
                 settitle("Diagrama de pie");
@@ -205,10 +207,16 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
         let dataChart = [];
         let labels = [];
         var result = [];
+        let datapoints = [];
         switch (variable) {
             case "1":
 
                 result = await getBarrasPM25Data(sensor, dateFrom, dateTo, 1);
+                result.forEach(element => {
+                    var data = { label: element.variable, y: element.values }
+                    datapoints.push(data)
+
+                });
                 dataChart = result.map(eachResult => eachResult.values);
                 labels = result.map(eachResult => eachResult.variable);
                 break
@@ -238,36 +246,30 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
                 break
 
         }
+
         return (
-
-
-            <ChartistGraph
-                data={{
-                    labels: labels,
-                    series: [dataChart],
-                }}
-                type="Bar"
-                options={{
-                    seriesBarDistance: 10,
-                    axisX: {
-                        showGrid: true,
+            <div>
+                <CanvasJSChart options={{
+                    title: {
+                        text: "Basic Column Chart"
                     },
-                    height: "300px",
-                }}
-                responsiveOptions={[
-                    [
-                        "screen and (max-width: 640px)",
+                    data: [
                         {
-                            seriesBarDistance: 5,
-                            axisX: {
-                                labelInterpolationFnc: function (value) {
-                                    return value[0];
-                                },
-                            },
-                        },
-                    ],
-                ]}
-                            />
+                            // Change type to "doughnut", "line", "splineArea", etc.
+                            type: "column",
+                            dataPoints: [
+                                { label: "Apple", y: 10 },
+                                { label: "Orange", y: 15 },
+                                { label: "Banana", y: 25 },
+                                { label: "Mango", y: 30 },
+                                { label: "Grape", y: 28 }
+                            ]
+                        }
+                    ]
+                }}
+                /* onRef={ref => this.chart = ref} */
+                />
+            </div>
 
         );
     };
@@ -318,7 +320,7 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
                         series: dataChart,
                     }}
                     type="Pie"
-                                    />
+                />
             </div>);
     };
     async function getLineasDiagrama(sensor, variable, dateFrom, dateTo) {
@@ -395,7 +397,7 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
                             },
                         ],
                     ]}
-                                    />
+                />
             </div>
         );
     };
@@ -424,19 +426,16 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
                                             {htmldiagram}
                                         </div>
                                     </Col>
-                                </Row>                              
+                                </Row>
                             </Col>
-                        </CardBody>                      
-                        <Card.Footer  style={{ padding: 40, textAlign:'center'}}  >                       
+                        </CardBody>
+                        <Card.Footer style={{ padding: 40, textAlign: 'center' }}  >
                             <Row className="pt-8">
                                 <Col>
                                     <button className={` ${projectStyles['button']} `} type='button' onClick={OnClose} >Cerrar</button>
                                 </Col>
-                                <Col> {/*<button className={` ${projectStyles['button']} `} type='button' onClick={() => MyDocument(htmldiagram)}> Descargar</button>
-                                         <PDFDownloadLink document={<MyDocument htmldiagram={htmldiagram} />} fileName="example.pdf">
-                                            {({ blob, url, loading, error }) => (loading ? 'Cargando documento...' : 'Descargar PDF')}
-                                        </PDFDownloadLink> */}
-                                     {/* <button className={` ${projectStyles['button']} `} type='button' onClick={generatePDF(chartRef)}> Descargar</button>   */}
+                                <Col>
+                                    {/* <button className={` ${projectStyles['button']} `} type='button' onClick={generatePDF(chartRef)}> Descargar</button>   */}
                                 </Col>
                             </Row>
                         </Card.Footer>
@@ -448,134 +447,4 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
     );
 }
 
-
-// const generatePDF = (chartRef) => {
-//     const chartElement = chartRef.current;
-//     console.log("llego este chartElement",chartElement);
-//     if (chartElement) {
-//       const doc = new jsPDF();
-//       doc.text('Ejemplo de gráfico', 10, 10);
-//       // Obtener los datos de la imagen del gráfico
-//       const imageData = chartElement.toDataURL('image/png');
-//       // Agregar la imagen al documento PDF
-//       doc.addImage(imageData, 'PNG', 10, 20, 180, 100); 
-//       // Guardar o mostrar el documento PDF
-//       doc.save('chart.pdf');
-//       // doc.output('dataurlnewwindow'); // Mostrar en una nueva ventana del navegador
-//     }
-//   };
-//  const ChartToPDFExample = () => {
-    
-  
-//     const generatePDF = () => {
-//       const chartElement = chartRef.current;
-//       if (chartElement) {
-//         const doc = new jsPDF();
-//         doc.text('Ejemplo de gráfico', 10, 10);
-//         // Obtener los datos de la imagen del gráfico
-//         const imageData = chartElement.toDataURL('image/png');
-//         // Agregar la imagen al documento PDF
-//         doc.addImage(imageData, 'PNG', 10, 20, 180, 100); 
-//         // Guardar o mostrar el documento PDF
-//         doc.save('chart.pdf');
-//         // doc.output('dataurlnewwindow'); // Mostrar en una nueva ventana del navegador
-//       }
-//     };
-  
-//     const chartData = {
-//       labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'],
-//       series: [[5, 2, 4, 2, 0]]
-//     };
-  
-//     const chartOptions = {
-//       width: 400,
-//       height: 300
-//     };
-  
-//     return (
-//       <div>
-//         <ChartistGraph data={chartData} options={chartOptions} type="Bar" ref={chartRef} />
-//         <button onClick={generatePDF}>Generar PDF del Gráfico</button>
-//       </div>
-//     );
-//   };
-  
-// const styles1 = StyleSheet.create({
-//     page: {
-//         flexDirection: 'row',
-//         backgroundColor: '#E4E4E4'
-//     },
-//     section: {
-//         margin: 10,
-//         padding: 10,
-//         flexGrow: 1
-//     }
-// });
-
-
-// async function MyDocument  ( htmldiagram )  {
-// <div>
-//     <PDFViewer width="1000" height="600">
-//         <iframe title='PDF Viewer' width="100%" height="100%" src={pdfBlobUrl(htmldiagram)}/>
-//     </PDFViewer>
-// </div>
-
-// };
-
-// const pdfBlobUrl = URL.createObjectURL(htmldiagram)(
-//     new Blob([
-//         <Document>
-//             <Page size="A4" style={styles1.page}>
-//                 <View style={styles1.section}>
-//                     <Text>Chart Exported to PDF</Text>
-//                     {htmldiagram}
-//                 </View>
-//             </Page>
-//         </Document>
-//     ])
-// );
-
-// async function DownloadFuntion(htmldiagram){
-// console.log("llego",htmldiagram);
-// //className="ct-chart" id="chartActivityBar"
-// const algoClass = htmldiagram.props.className;
-// const doc = new jsPDF("p", "px");
-// const elements = document.getElementsByClassName(algoClass); // (2)
-
-//   await creatPdf({ doc, elements }); // (3-5)
-
-//   doc.save(`charts.pdf`); 
-// }
-// async function creatPdf({
-//     doc,
-//     elements,
-//   }) {
-//     const padding = 10;
-//     const marginTop = 20;
-//     let top = marginTop;
-
-//     const el = elements;
-//     const imgData = await htmlToImage.toPng(el[0]);
-//     let elHeight = el.offsetHeight;
-//     let elWidth = el.offsetWidth;
-
-//     const pageWidth = doc.internal.pageSize.getWidth();
-
-//     if (elWidth > pageWidth) {
-//       const ratio = pageWidth / elWidth;
-//       elHeight = elHeight * ratio - padding * 2;
-//       elWidth = elWidth * ratio - padding * 2;
-//     }
-
-//     const pageHeight = doc.internal.pageSize.getHeight();
-
-//     if (top + elHeight > pageHeight) {
-//       doc.addPage();
-//       top = marginTop;
-//     }
-//     doc.addImage(imgData, "PNG", padding, top, elWidth, elHeight, `image`);
-//     top += elHeight + marginTop;
-//   }
-
 export default ReportPage;
-

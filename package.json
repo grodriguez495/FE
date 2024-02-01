@@ -2,6 +2,8 @@
   "name": "light-bootstrap-dashboard-react",
   "version": "2.0.1",
   "dependencies": {
+    "@canvasjs/charts": "^3.7.36",
+    "@canvasjs/react-charts": "^1.0.0",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@fortawesome/fontawesome-free": "5.15.2",
