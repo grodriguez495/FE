@@ -3,11 +3,10 @@
 import React, { Component } from "react";
 
 import { Dropdown, Badge, Button, Form } from "react-bootstrap";
-
-import sideBarImage1 from "assets/img/sidebar-1.jpg";
-import sideBarImage2 from "assets/img/sidebar-2.jpg";
-import sideBarImage3 from "assets/img/sidebar-3.jpg";
-import sideBarImage4 from "assets/img/sidebar-4.jpg";
+import arbol from "assets/img/arbol.jpg";
+import caño_cristales from "assets/img/CAÑO_CRISTALES,_EL_RÍO_DE_COLORES.jpg";
+import naturaleza from "assets/img/Naturaleza-es-futuro.jpg";
+import rio from "assets/img/rio.jpg";
 
 function FixedPlugin({
   hasImage,
@@ -17,21 +16,7 @@ function FixedPlugin({
   image,
   setImage
 }) {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     classes: "dropdown show-dropdown open",
-  //     bg_checked: true,
-  //     bgImage: this.props.bgImage,
-  //   };
-  // }
-  // handleClick = () => {
-  //   this.props.handleFixedClick();
-  // };
-  // onChangeClick = () => {
-  //   this.props.handleHasImage(!this.state.bg_checked);
-  //   this.setState({ bg_checked: !this.state.bg_checked });
-  // };
+ 
   return (
     <div className="fixed-plugin">
       <Dropdown>
@@ -52,89 +37,53 @@ function FixedPlugin({
               onChange={setHasImage}
             />
           </li>
-          {/* <li className="adjustments-line mt-3">
-            <p>Filters</p>
-            <div className="pull-right">
-              <Badge
-                variant="secondary"
-                className={color === "black" ? "active" : ""}
-                onClick={() => setColor("black")}
-              ></Badge>
-              <Badge
-                variant="azure"
-                className={color === "azure" ? "active" : ""}
-                onClick={() => setColor("azure")}
-              ></Badge>
-              <Badge
-                variant="green"
-                className={color === "green" ? "active" : ""}
-                onClick={() => setColor("green")}
-              ></Badge>
-              <Badge
-                variant="orange"
-                className={color === "orange" ? "active" : ""}
-                onClick={() => setColor("orange")}
-              ></Badge>
-              <Badge
-                variant="red"
-                className={color === "red" ? "active" : ""}
-                onClick={() => setColor("red")}
-              ></Badge>
-              <Badge
-                variant="purple"
-                className={color === "purple" ? "active" : ""}
-                onClick={() => setColor("purple")}
-              ></Badge>
-            </div>
-            <div className="clearfix"></div>
-          </li> */}
           <li className="header-title">Sidebar Images</li>
-          <li className={image === sideBarImage1 ? "active" : ""}>
+          <li className={image === arbol ? "active" : ""}>
             <a
               className="img-holder switch-trigger d-block"
               href="#pablo"
               onClick={(e) => {
                 e.preventDefault();
-                setImage(sideBarImage1);
+                setImage(arbol);
               }}
             >
-              <img alt="..." src={sideBarImage1}></img>
+              <img alt="..." src={arbol}></img>
             </a>
           </li>
-          <li className={image === sideBarImage2 ? "active" : ""}>
+          <li className={image === caño_cristales ? "active" : ""}>
             <a
               className="img-holder switch-trigger d-block"
               href="#pablo"
               onClick={(e) => {
                 e.preventDefault();
-                setImage(sideBarImage2);
+                setImage(caño_cristales);
               }}
             >
-              <img alt="..." src={sideBarImage2}></img>
+              <img alt="..." src={caño_cristales}></img>
             </a>
           </li>
-          <li className={image === sideBarImage3 ? "active" : ""}>
+          <li className={image === naturaleza ? "active" : ""}>
             <a
               className="img-holder switch-trigger d-block"
               href="#pablo"
               onClick={(e) => {
                 e.preventDefault();
-                setImage(sideBarImage3);
+                setImage(naturaleza);
               }}
             >
-              <img alt="..." src={sideBarImage3}></img>
+              <img alt="..." src={naturaleza}></img>
             </a>
           </li>
-          <li className={image === sideBarImage4 ? "active" : ""}>
+          <li className={image === rio ? "active" : ""}>
             <a
               className="img-holder switch-trigger d-block"
               href="#pablo"
               onClick={(e) => {
                 e.preventDefault();
-                setImage(sideBarImage4);
+                setImage(rio);
               }}
             >
-              <img alt="..." src={sideBarImage4}></img>
+              <img alt="..." src={rio}></img>
             </a>
           </li>
 
