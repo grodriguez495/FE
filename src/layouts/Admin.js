@@ -9,10 +9,10 @@ import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 
 import routes from "routes.js";
 import Login from "views/Login.js";
-import sidebarImage from "assets/img/sidebar-3.jpg";
+import arbol from "assets/img/arbol.jpg";
 
 function Admin() {
-  const [image, setImage] = React.useState(sidebarImage);
+  const [image, setImage] = React.useState(arbol);
   const [color, setColor] = React.useState("black");
   const [hasImage, setHasImage] = React.useState(true);
   const location = useLocation();
