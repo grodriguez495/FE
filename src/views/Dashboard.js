@@ -29,11 +29,13 @@ function Dashboard() {
   const [totalSensores, setTotalSensores] = useState(null);
   const [userNotification, setUserNotification] = useState([]);
   const [userNotificationTable, setuserNotificationTable] = useState([]);
+  const [dropdownSelectedItem, setDropdownSelectedItem] = useState(null);
 
   const getSensorIdsResponse = async () => {
     const { data } = await axios.get(urlGetSensorIds);
     setTotalSensores(data.length);
     setSensorId(data);
+    setDropdownSelectedItem(data[0]);
   }
 
   async function getUserNotificationResponse() {
@@ -58,6 +60,7 @@ function Dashboard() {
 
   const handleSelect = (eventKey) => {
     setSelectedItem(eventKey);
+    setDropdownSelectedItem(eventKey);
     getChartDataDashboard(eventKey);
 
   };
@@ -155,13 +158,22 @@ function Dashboard() {
               <Card.Body>
                 <Dropdown onSelect={handleSelect}>
                   <Dropdown.Toggle id="dropdown-basic">
-                    Sensor
+                    {dropdownSelectedItem}
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     {
-                      sensorId.map((sensor, key) => (<Dropdown.Item key={key} eventKey={sensor}>{sensor}</Dropdown.Item>))
+                      sensorId.map((option)=>(
+                        <Dropdown.Item key={option} eventKey={option} active= {selectedItem === option}>
+                          {option}
+                        </Dropdown.Item>
+                      ))
                     }
                   </Dropdown.Menu>
+                  {/* <Dropdown.Menu>
+                    {
+                      sensorId.map((sensor, key) => (<Dropdown.Item key={key} eventKey={sensor} active={selectedItem === key}>{sensor}</Dropdown.Item>))
+                    }
+                  </Dropdown.Menu> */}
                 </Dropdown>
               </Card.Body>
             </Card>
