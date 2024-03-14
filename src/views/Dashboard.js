@@ -27,6 +27,7 @@ function Dashboard() {
   const [labels, setLabels] = useState([]);
   const [dataChart, setDataChart] = useState([]);
   const [totalSensores, setTotalSensores] = useState(null);
+  const [totalNotification,setTotalNotification]= useState(null);
   const [userNotification, setUserNotification] = useState([]);
   const [userNotificationTable, setuserNotificationTable] = useState([]);
   const [dropdownSelectedItem, setDropdownSelectedItem] = useState(null);
@@ -49,8 +50,9 @@ function Dashboard() {
       }
     });
     setUserNotification(notificationDataResponse.data);
+    setTotalNotification(notificationDataResponse.data.length);
     setuserNotificationTable(notificationDataResponse.data.splice(0,4));
-  }
+   }
   useEffect(() => {
     getUserNotificationResponse();
     getSensorIdsResponse();
@@ -135,8 +137,7 @@ function Dashboard() {
                   <Col xs="9">
                     <div className="numbers">
                       <p className="card-category">Numero de alertas enviadas sin marcar como leidas </p>
-
-                      <Card.Title as="h4">{userNotification.length}</Card.Title>
+                      <Card.Title as="h4">{totalNotification}</Card.Title>
                     </div>
                   </Col>
                 </Row>
