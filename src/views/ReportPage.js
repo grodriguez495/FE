@@ -176,7 +176,11 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
     const [title, settitle] = useState("");
     const [htmldiagram, sethtmldiagram] = useState("");
     
-
+console.log("llego el sensor",sensor);
+console.log("llego el reporte",reporte);
+console.log("llego el variable",variable);
+console.log("llego el datefrom",dateFrom);
+console.log("llego el dateTo",dateTo);
 
     useEffect(() => {
         if (isOpen)
@@ -339,19 +343,19 @@ function PopupPage({ isOpen, OnClose, sensor, reporte, variable, dateFrom, dateT
                 break
 
             case "3":
-                result = await getLineCO2Data(dateFrom, dateTo, 3);
+                result = await getLineCO2Data(sensor,dateFrom, dateTo, 3);
                 dataChart = result.map(eachResult => eachResult.values);
                 labels = result.map(eachResult => eachResult.variable);
                 break
 
             case "4":
-                result = await getLineTemperatureData(dateFrom, dateTo, 4);
+                result = await getLineTemperatureData(sensor,dateFrom, dateTo, 4);
                 dataChart = result.map(eachResult => eachResult.values);
                 labels = result.map(eachResult => eachResult.variable);
                 break
 
             case "5":
-                result = await getLineHumidityData(dateFrom, dateTo, 5);
+                result = await getLineHumidityData(sensor,dateFrom, dateTo, 5);
                 dataChart = result.map(eachResult => eachResult.values);
                 labels = result.map(eachResult => eachResult.variable);
                 break

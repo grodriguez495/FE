@@ -19,7 +19,7 @@ export async function getBarrasCO2Data(sensor,dateFrom, dateTo, variableId) {
 };
 export async function getBarrasTemperatureData(sensor,dateFrom, dateTo, variableId) {
    
-    let data = await getsensorValuesByDateAndVariable(dateFrom, dateTo, variableId);   
+    let data = await getsensorValuesByDateAndVariable(sensor,dateFrom, dateTo, variableId);   
     return data;
 }
 export async function getBarrasHumidityData(sensor,dateFrom, dateTo, variableId) {
@@ -30,7 +30,10 @@ export async function getBarrasHumidityData(sensor,dateFrom, dateTo, variableId)
 };
 
 export async function getSensorValuesByDatesAndVariableResponse(sensor,dateFrom, dateTo, variableId) {
-
+    console.log("***llego el sensor",sensor);
+    console.log("***llego el variable",variableId);
+    console.log("***llego el datefrom",dateFrom);
+    console.log("***llego el dateTo",dateTo);
     const { data } = await axios.get(urlGetSensorValuesByDatesAndVariableAndSensor, {
         params: {
             variableId: variableId,
@@ -100,7 +103,7 @@ export async function getLinePM10Data(sensor,dateFrom, dateTo, variableId) {
     return data;
 };
 export async function getLineCO2Data(sensor,dateFrom, dateTo, variableId) {
-     let data = await getsensorValuesByDateAndVariable(dateFrom, dateTo, variableId);   
+     let data = await getsensorValuesByDateAndVariable(sensor,dateFrom, dateTo, variableId);   
     return data;
 };
 export async function getLineTemperatureData(sensor,dateFrom, dateTo, variableId) {
